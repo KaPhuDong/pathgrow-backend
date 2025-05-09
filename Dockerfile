@@ -20,7 +20,7 @@ RUN chmod -R 777 storage bootstrap/cache
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
 
 # Expose port 1000 for external access
-EXPOSE 1000
+EXPOSE 8080
 
 # Run Laravel application
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=1000"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
