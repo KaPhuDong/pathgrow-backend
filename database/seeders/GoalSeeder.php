@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Models\User;
 
 class GoalSeeder extends Seeder
 {
@@ -16,9 +17,19 @@ class GoalSeeder extends Seeder
     {
         $now = Carbon::now();
 
+        // Tạo user nếu chưa có
+        $user = User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('password')
+            ]
+        );
+
+        // Insert goals
         DB::table('goals')->insert([
             [
-                'user_id' => 1,
+                'user_id' => $user->id,
                 'title' => 'IT English - Improve Technical Vocabulary',
                 'description' => 'Learn 50 new IT-related English terms.',
                 'start_date' => '2025-05-01',
@@ -28,7 +39,7 @@ class GoalSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'user_id' => 1,
+                'user_id' => $user->id,
                 'title' => 'TOEIC - Listening Practice',
                 'description' => 'Complete 10 TOEIC listening tests.',
                 'start_date' => '2025-05-02',
@@ -38,7 +49,7 @@ class GoalSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'user_id' => 1,
+                'user_id' => $user->id,
                 'title' => 'Community English - Presentation Skills',
                 'description' => 'Prepare and deliver a 5-minute talk in English.',
                 'start_date' => '2025-05-03',
