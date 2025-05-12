@@ -8,3 +8,4 @@ interface AuthServiceInterface
 {
     public function login(Request $request);
 }
+

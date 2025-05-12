@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repositories\Auth;
+namespace App\Repositories;
 
 interface AuthRepositoryInterface
 {
-    public function attemptLogin(array $credentials);
+    public function findUserByEmailAndRole(string $email, string $role);
 }
+

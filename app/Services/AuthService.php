@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Services\Auth;
+namespace App\Services;
 
-use App\Repositories\Auth\AuthRepositoryInterface;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Repositories\AuthRepositoryInterface;
 
-class AuthService
+class AuthService implements AuthServiceInterface
 {
-    protected $authRepo;
+    protected $authRepository;
 
-    public function __construct(AuthRepositoryInterface $authRepo)
+    public function __construct(AuthRepositoryInterface $authRepository)
     {
-        $this->authRepo = $authRepo;
+        $this->authRepository = $authRepository;
     }
 
-    public function login(array $credentials)
+    public function login(Request $request)
     {
-        if ($this->authRepo->attemptLogin($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
+        $user = $this->authRepository->findUserByEmailAndRole($request->email, $request->role);
 
-            return [
-                'user' => $user,
-                'token' => $token
-            ];
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials or role'], 401);
         }
 
-        return false;
+        return response()->json([
+            'message' => 'Login successful',
+            'user'    => $user
+        ]);
     }
 }
