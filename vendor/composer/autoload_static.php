@@ -521,8 +521,8 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
     );
 
     public static $classMap = array (
+        'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
         'App\\Http\\Controllers\\Api\\GoalController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/GoalController.php',
-        'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\CheckRole' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckRole.php',
@@ -537,9 +537,6 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'App\\Repositories\\GoalRepository' => __DIR__ . '/../..' . '/app/Repositories/GoalRepository.php',
         'App\\Repositories\\GoalRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/GoalRepositoryInterface.php',
         'App\\Repositories\\UserRepository' => __DIR__ . '/../..' . '/app/Repositories/UserRepository.php',
-        'App\\Services\\AuthServiceInterface' => __DIR__ . '/../..' . '/app/Services/AuthServiceInterface.php',
-        'App\\Services\\GoalService' => __DIR__ . '/../..' . '/app/Services/GoalService.php',
-        'App\\Services\\GoalServiceInterface' => __DIR__ . '/../..' . '/app/Services/GoalServiceInterface.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',

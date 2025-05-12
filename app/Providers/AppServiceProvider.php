@@ -29,18 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
-        $this->app->bind(AuthServiceInterface::class, AuthService::class);
-        $this->app->bind(GoalRepositoryInterface::class, GoalRepository::class);
-        $this->app->bind(GoalServiceInterface::class, GoalService::class);
 
-        // Đăng ký JournalInclass
-        $this->app->bind(JournalInclassRepositoryInterface::class, JournalInclassRepository::class);
-        $this->app->bind(JournalInclassServiceInterface::class, JournalInclassService::class);
-
-        // Đăng ký JournalSelfstudy
-        $this->app->bind(JournalSelfstudyRepositoryInterface::class, JournalSelfstudyRepository::class);
-        $this->app->bind(JournalSelfstudyServiceInterface::class, JournalSelfstudyService::class);
     }
 
     /**

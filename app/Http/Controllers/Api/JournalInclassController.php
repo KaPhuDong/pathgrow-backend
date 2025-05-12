@@ -1,55 +1,64 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\Services\JournalInclassService;
+use App\Repositories\JournalInclassRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class JournalInclassController extends Controller
 {
-    protected $service;
+    protected $repository;
 
-    public function __construct(JournalInclassService $service)
+    public function __construct(JournalInclassRepository $repository)
     {
-        $this->service = $service;
+        $this->repository = $repository;
     }
 
-    // Lấy tất cả các mục hoặc theo journal_id
     public function index(Request $request)
     {
-        // Kiểm tra xem có tham số journal_id trong query string không
         $journalId = $request->query('journal_id');
-
-        // Nếu có journal_id, gọi phương thức getList
         if ($journalId) {
-            return response()->json($this->service->getList($journalId));
+            return response()->json($this->repository->getByJournalId($journalId));
         }
-
-        // Nếu không có journal_id, gọi phương thức getAll
-        return response()->json($this->service->getAll());
+        return response()->json($this->repository->getAll());
     }
 
-    // Tạo mới một mục
     public function store(Request $request)
     {
         $data = $request->all();
-
-        // Nếu cần, có thể thêm kiểm tra validation ở đây
-        return response()->json($this->service->create($data));
+        $this->validateData($data);
+        return response()->json($this->repository->create($data));
     }
 
-    // Cập nhật một mục
     public function update(Request $request, $id)
     {
         $data = $request->all();
-
-        // Kiểm tra và gọi phương thức update
-        return response()->json($this->service->update($id, $data));
+        $this->validateData($data);
+        return response()->json($this->repository->update($id, $data));
     }
 
-    // Xóa một mục
     public function delete($id)
     {
-        return response()->json($this->service->delete($id));
+        return response()->json($this->repository->delete($id));
+    }
+
+    protected function validateData(array $data)
+    {
+        $validator = Validator::make($data, [
+            'journal_id'        => 'required|integer|exists:journals,id',
+            'date'              => 'required|date',
+            'skills_module'     => 'nullable|string|max:255',
+            'lesson_summary'    => 'nullable|string',
+            'self_assessment'   => 'nullable|integer|min:0|max:10',
+            'difficulties'      => 'nullable|string',
+            'improvement_plan'  => 'nullable|string',
+            'problem_solved'    => 'boolean',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
     }
 }

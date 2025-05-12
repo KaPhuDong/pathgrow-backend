@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Models\JournalSelfstudyDetail;
@@ -9,15 +10,16 @@ class JournalSelfstudyRepository
     {
         return JournalSelfstudyDetail::all();
     }
-    public function getByJournalId($journalId)
-    {
-        return JournalSelfstudyDetail::where('journal_id', $journalId)->get();
-    }
+
     public function getById($id)
     {
         return JournalSelfstudyDetail::find($id);
     }
 
+    public function getList($journalId)
+    {
+        return JournalSelfstudyDetail::where('journal_id', $journalId)->get();
+    }
 
     public function create(array $data)
     {

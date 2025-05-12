@@ -1,51 +1,50 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\JournalSelfstudyService;
+use App\Repositories\JournalSelfstudyRepository;
 
 class JournalSelfstudyController extends Controller
 {
-    protected $service;
+    protected $repository;
 
-    public function __construct(JournalSelfstudyService $service)
+    public function __construct(JournalSelfstudyRepository $repository)
     {
-        $this->service = $service;
+        $this->repository = $repository;
     }
 
     public function index()
     {
-        return response()->json($this->service->getAll());
+        return response()->json($this->repository->getAll());
     }
 
     public function show($id)
     {
-        return response()->json($this->service->getById($id));
+        return response()->json($this->repository->getById($id));
     }
 
     public function listByJournal($journalId)
     {
-        return response()->json($this->service->getList($journalId));
+        return response()->json($this->repository->getList($journalId));
     }
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        $created = $this->service->create($data);
+        $created = $this->repository->create($request->all());
         return response()->json($created, 201);
     }
 
     public function update(Request $request, $id)
     {
-        $updated = $this->service->update($id, $request->all());
+        $updated = $this->repository->update($id, $request->all());
         return response()->json($updated);
     }
 
     public function destroy($id)
     {
-        $this->service->delete($id);
+        $this->repository->delete($id);
         return response()->json(['message' => 'Deleted successfully']);
     }
 }

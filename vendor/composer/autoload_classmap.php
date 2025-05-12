@@ -6,8 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Http\\Controllers\\Api\\AuthController' => $baseDir . '/app/Http/Controllers/Api/AuthController.php',
     'App\\Http\\Controllers\\Api\\GoalController' => $baseDir . '/app/Http/Controllers/Api/GoalController.php',
-    'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\CheckRole' => $baseDir . '/app/Http/Middleware/CheckRole.php',
@@ -22,9 +22,6 @@ return array(
     'App\\Repositories\\GoalRepository' => $baseDir . '/app/Repositories/GoalRepository.php',
     'App\\Repositories\\GoalRepositoryInterface' => $baseDir . '/app/Repositories/GoalRepositoryInterface.php',
     'App\\Repositories\\UserRepository' => $baseDir . '/app/Repositories/UserRepository.php',
-    'App\\Services\\AuthServiceInterface' => $baseDir . '/app/Services/AuthServiceInterface.php',
-    'App\\Services\\GoalService' => $baseDir . '/app/Services/GoalService.php',
-    'App\\Services\\GoalServiceInterface' => $baseDir . '/app/Services/GoalServiceInterface.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',
     'Brick\\Math\\BigInteger' => $vendorDir . '/brick/math/src/BigInteger.php',
