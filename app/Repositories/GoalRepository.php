@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 use App\Models\Goal;
 
-class GoalRepository implements GoalRepositoryInterface
+class GoalRepository
 {
     protected $model;
 

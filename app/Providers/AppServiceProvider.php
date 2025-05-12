@@ -7,10 +7,7 @@ use App\Repositories\AuthRepository;
 use App\Repositories\AuthRepositoryInterface;
 use App\Services\AuthService;
 use App\Services\AuthServiceInterface;
-use App\Repositories\GoalRepositoryInterface;
 use App\Repositories\GoalRepository;
-use App\Services\GoalServiceInterface;
-use App\Services\GoalService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,8 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(GoalRepositoryInterface::class, GoalRepository::class);
-        $this->app->bind(GoalServiceInterface::class, GoalService::class);
+        $this->app->bind(\App\Repositories\GoalRepository::class);
     }
 
     /**

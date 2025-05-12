@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\GoalServiceInterface;
+use App\Repositories\GoalRepository;
 use Illuminate\Http\Request;
 
 class GoalController extends Controller
 {
-    protected $goalService;
+    protected $goalRepo;
 
-    public function __construct(GoalServiceInterface $goalService)
+    public function __construct(GoalRepository $goalRepo)
     {
-        $this->goalService = $goalService;
+        $this->goalRepo = $goalRepo;
     }
 
     public function index()
     {
-        return response()->json($this->goalService->getAllGoals());
+        return response()->json($this->goalRepo->all());
     }
 
     public function store(Request $request)
@@ -31,12 +31,14 @@ class GoalController extends Controller
             'status' => 'nullable|in:not_started,in_progress,completed',
         ]);
 
-        return response()->json($this->goalService->createGoal($validated), 201);
+        $goal = $this->goalRepo->create($validated);
+        return response()->json($goal, 201);
     }
 
     public function show($id)
     {
-        return response()->json($this->goalService->getGoalById($id));
+        $goal = $this->goalRepo->find($id);
+        return response()->json($goal);
     }
 
     public function update(Request $request, $id)
@@ -49,12 +51,13 @@ class GoalController extends Controller
             'status' => 'nullable|in:not_started,in_progress,completed',
         ]);
 
-        return response()->json($this->goalService->updateGoal($id, $validated));
+        $goal = $this->goalRepo->update($id, $validated);
+        return response()->json($goal);
     }
 
     public function destroy($id)
     {
-        $this->goalService->deleteGoal($id);
+        $this->goalRepo->delete($id);
         return response()->json(['message' => 'Deleted successfully']);
     }
 }
