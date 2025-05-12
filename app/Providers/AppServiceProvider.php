@@ -12,6 +12,16 @@ use App\Repositories\GoalRepository;
 use App\Services\GoalServiceInterface;
 use App\Services\GoalService;
 
+use App\Repositories\JournalInclassRepositoryInterface;
+use App\Repositories\JournalInclassRepository;
+use App\Services\JournalInclassServiceInterface;
+use App\Services\JournalInclassService;
+
+use App\Repositories\JournalSelfstudyRepositoryInterface;
+use App\Repositories\JournalSelfstudyRepository;
+use App\Services\JournalSelfstudyServiceInterface;
+use App\Services\JournalSelfstudyService;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,8 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(GoalRepositoryInterface::class, GoalRepository::class);
-        $this->app->bind(GoalServiceInterface::class, GoalService::class);
+
     }
 
     /**
