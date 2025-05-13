@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Goal extends Model
+class GoalQuestion extends Model
 {
     use HasFactory;
 
     // Định nghĩa bảng
-    protected $table = 'goals';
+    protected $table = 'goal_questions';
 
     // Các trường có thể gán giá trị (fillable)
     protected $fillable = [
         'user_id',
         'semester_id',
         'subject_id',
-        'expect_course',
-        'expect_teacher',
-        'expect_myself',
+        'question',
     ];
 
     // Quan hệ với bảng User

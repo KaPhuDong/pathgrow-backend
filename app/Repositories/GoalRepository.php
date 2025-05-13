@@ -1,42 +1,50 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Models\Goal;
 
 class GoalRepository
 {
-    protected $model;
-
-    public function __construct(Goal $goal)
-    {
-        $this->model = $goal;
-    }
-
+    // Lấy tất cả mục tiêu
     public function all()
     {
-        return $this->model->all();
+        return Goal::all();
     }
 
+    // Lấy mục tiêu theo ID
     public function find($id)
     {
-        return $this->model->findOrFail($id);
+        return Goal::find($id);
     }
 
+    // Tạo mới mục tiêu
     public function create(array $data)
     {
-        return $this->model->create($data);
+        return Goal::create($data);
     }
 
+    // Cập nhật mục tiêu
     public function update($id, array $data)
     {
-        $goal = $this->find($id);
-        $goal->update($data);
-        return $goal;
+        $goal = Goal::find($id);
+        if ($goal) {
+            $goal->update($data);
+            return $goal;
+        }
+
+        return null;
     }
 
+    // Xóa mục tiêu
     public function delete($id)
     {
-        $goal = $this->find($id);
-        return $goal->delete();
+        $goal = Goal::find($id);
+        if ($goal) {
+            $goal->delete();
+            return true;
+        }
+
+        return false;
     }
 }
