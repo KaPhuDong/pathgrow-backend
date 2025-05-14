@@ -1,42 +1,43 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Models\Goal;
 
-class GoalRepository implements GoalRepositoryInterface
+class GoalRepository
 {
-    protected $model;
-
-    public function __construct(Goal $goal)
-    {
-        $this->model = $goal;
-    }
-
     public function all()
     {
-        return $this->model->all();
+        return Goal::all();
     }
 
     public function find($id)
     {
-        return $this->model->findOrFail($id);
+        return Goal::find($id);
     }
 
     public function create(array $data)
     {
-        return $this->model->create($data);
+        return Goal::create($data);
     }
 
     public function update($id, array $data)
     {
-        $goal = $this->find($id);
+        $goal = Goal::findOrFail($id);
         $goal->update($data);
         return $goal;
     }
 
     public function delete($id)
     {
-        $goal = $this->find($id);
-        return $goal->delete();
+        return Goal::destroy($id);
+    }
+
+    public function findByUserSemesterSubject($userId, $semesterId, $subjectId)
+    {
+        return Goal::where('user_id', $userId)
+            ->where('semester_id', $semesterId)
+            ->where('subject_id', $subjectId)
+            ->first();
     }
 }
