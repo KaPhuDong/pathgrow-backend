@@ -10,8 +10,15 @@ class Classes extends Model
 
     protected $fillable = [
         'name',
-        'students',
+        'students', 
         'color',
         'slug',
     ];
+
+    // Thêm quan hệ 1 lớp có nhiều học sinh (user role = student)
+    public function students()
+    {
+        // Lọc role = 'student' để chỉ lấy học sinh
+        return $this->hasMany(User::class, 'class_id')->where('role', 'student');
+    }
 }

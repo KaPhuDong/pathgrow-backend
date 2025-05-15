@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\JournalSelfstudyController;
 use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
+use App\Http\Controllers\Api\ListStudentController;
 use App\Http\Controllers\Api\AdminController;
 
 Route::get('/user', function (Request $request) {
@@ -60,6 +61,7 @@ Route::prefix('notifications')->group(function () {
     Route::delete('{id}', [NotificationsController::class, 'destroy']);
 
 Route::apiResource('classes', ClassController::class);
+Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
   
 Route::prefix('admin')->group(function () {
     Route::get('/users', [AdminController::class, 'index']);
