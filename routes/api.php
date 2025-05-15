@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\JournalSelfstudyController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
-
+use App\Http\Controllers\Api\AdminController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,14 +20,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-Route::prefix('goals')->group(function () {
-    Route::get('/', [GoalController::class, 'index']); 
-    Route::get('{id}', [GoalController::class, 'show']); 
-    Route::post('/', [GoalController::class, 'store']); 
-    Route::put('{id}', [GoalController::class, 'update']); 
-    Route::delete('{id}', [GoalController::class, 'destroy']); 
-});
 
+Route::prefix('goals')->group(function () {
+    Route::get('/', [GoalController::class, 'index']);
+    Route::get('{id}', [GoalController::class, 'show']);
+    Route::post('/', [GoalController::class, 'store']);
+    Route::put('{id}', [GoalController::class, 'update']);
+    Route::delete('{id}', [GoalController::class, 'destroy']);
+});
 
 Route::prefix('goal-questions')->group(function () {
     Route::get('/', [GoalQuestionController::class, 'index']);
@@ -51,7 +51,6 @@ Route::post('/selfstudy', [JournalSelfstudyController::class, 'store']);
 Route::put('/selfstudy/{id}', [JournalSelfstudyController::class, 'update']);
 Route::delete('/selfstudy/{id}', [JournalSelfstudyController::class, 'destroy']);
 
-
 //route notification
 Route::get('/notifications', [NotificationController::class, 'index']);
 Route::get('/notifications/user/{userId}', [NotificationController::class, 'getByUser']);
@@ -61,3 +60,10 @@ Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRe
 Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
 
 Route::apiResource('classes', ClassController::class);
+Route::prefix('admin')->group(function () {
+    Route::get('/users', [AdminController::class, 'index']);
+    Route::post('/users', [AdminController::class, 'store']);
+    Route::get('/users/{id}', [AdminController::class, 'show']);
+    Route::put('/users/{id}', [AdminController::class, 'update']);
+    Route::delete('/users/{id}', [AdminController::class, 'destroy']);
+});
