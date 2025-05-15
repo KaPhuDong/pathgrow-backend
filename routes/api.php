@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\JournalSelfstudyController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
+use App\Http\Controllers\Api\ListStudentController;
 
 
 Route::get('/user', function (Request $request) {
@@ -61,3 +62,5 @@ Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRe
 Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
 
 Route::apiResource('classes', ClassController::class);
+
+Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
