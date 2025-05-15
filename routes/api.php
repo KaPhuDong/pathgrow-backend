@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\JournalInclassController;
 use App\Http\Controllers\Api\JournalSelfstudyController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\GoalQuestionController;
+use App\Http\Controllers\Api\AdminController;
 
 
 Route::get('/user', function (Request $request) {
@@ -20,11 +21,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 Route::prefix('goals')->group(function () {
-    Route::get('/', [GoalController::class, 'index']); 
-    Route::get('{id}', [GoalController::class, 'show']); 
-    Route::post('/', [GoalController::class, 'store']); 
-    Route::put('{id}', [GoalController::class, 'update']); 
-    Route::delete('{id}', [GoalController::class, 'destroy']); 
+    Route::get('/', [GoalController::class, 'index']);
+    Route::get('{id}', [GoalController::class, 'show']);
+    Route::post('/', [GoalController::class, 'store']);
+    Route::put('{id}', [GoalController::class, 'update']);
+    Route::delete('{id}', [GoalController::class, 'destroy']);
 });
 
 
@@ -58,3 +59,11 @@ Route::get('/notifications/{id}', [NotificationController::class, 'show']);
 Route::post('/notifications', [NotificationController::class, 'store']);
 Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+
+Route::prefix('admin')->group(function () {
+    Route::get('/users', [AdminController::class, 'index']);
+    Route::post('/users', [AdminController::class, 'store']);
+    Route::get('/users/{id}', [AdminController::class, 'show']);
+    Route::put('/users/{id}', [AdminController::class, 'update']);
+    Route::delete('/users/{id}', [AdminController::class, 'destroy']);
+});
