@@ -6,11 +6,11 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GoalController;
 use App\Http\Controllers\Api\JournalInclassController;
 use App\Http\Controllers\Api\JournalSelfstudyController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
 use App\Http\Controllers\Api\ListStudentController;
-
+use App\Http\Controllers\Api\AdminController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,14 +21,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-Route::prefix('goals')->group(function () {
-    Route::get('/', [GoalController::class, 'index']); 
-    Route::get('{id}', [GoalController::class, 'show']); 
-    Route::post('/', [GoalController::class, 'store']); 
-    Route::put('{id}', [GoalController::class, 'update']); 
-    Route::delete('{id}', [GoalController::class, 'destroy']); 
-});
 
+Route::prefix('goals')->group(function () {
+    Route::get('/', [GoalController::class, 'index']);
+    Route::get('{id}', [GoalController::class, 'show']);
+    Route::post('/', [GoalController::class, 'store']);
+    Route::put('{id}', [GoalController::class, 'update']);
+    Route::delete('{id}', [GoalController::class, 'destroy']);
+});
 
 Route::prefix('goal-questions')->group(function () {
     Route::get('/', [GoalQuestionController::class, 'index']);
@@ -52,15 +52,21 @@ Route::post('/selfstudy', [JournalSelfstudyController::class, 'store']);
 Route::put('/selfstudy/{id}', [JournalSelfstudyController::class, 'update']);
 Route::delete('/selfstudy/{id}', [JournalSelfstudyController::class, 'destroy']);
 
-
-//route notification
-Route::get('/notifications', [NotificationController::class, 'index']);
-Route::get('/notifications/user/{userId}', [NotificationController::class, 'getByUser']);
-Route::get('/notifications/{id}', [NotificationController::class, 'show']);
-Route::post('/notifications', [NotificationController::class, 'store']);
-Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
-Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+//route notification (BỎ middleware để test không cần login)
+Route::prefix('notifications')->group(function () {
+    Route::get('/', [NotificationsController::class, 'index']);
+    Route::get('{id}', [NotificationsController::class, 'getByUser']);
+    Route::post('/', [NotificationsController::class, 'store']);
+    Route::put('{id}/read', [NotificationsController::class, 'markAsRead']);
+    Route::delete('{id}', [NotificationsController::class, 'destroy']);
 
 Route::apiResource('classes', ClassController::class);
-
 Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
+  
+Route::prefix('admin')->group(function () {
+    Route::get('/users', [AdminController::class, 'index']);
+    Route::post('/users', [AdminController::class, 'store']);
+    Route::get('/users/{id}', [AdminController::class, 'show']);
+    Route::put('/users/{id}', [AdminController::class, 'update']);
+    Route::delete('/users/{id}', [AdminController::class, 'destroy']);
+});
