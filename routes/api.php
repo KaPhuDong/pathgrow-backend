@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\JournalInclassController;
 use App\Http\Controllers\Api\JournalSelfstudyController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\GoalQuestionController;
+use App\Http\Controllers\Api\ClassController;
 
 
 Route::get('/user', function (Request $request) {
@@ -58,3 +59,5 @@ Route::get('/notifications/{id}', [NotificationController::class, 'show']);
 Route::post('/notifications', [NotificationController::class, 'store']);
 Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+
+Route::apiResource('classes', ClassController::class);
