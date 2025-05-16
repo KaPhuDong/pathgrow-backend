@@ -55,3 +55,11 @@ Route::prefix('selfstudy')->group(function () {
     Route::put('/{id}', [JournalSelfstudyController::class, 'update']);
     Route::delete('/{id}', [JournalSelfstudyController::class, 'destroy']);
 });
+
+Route::prefix('student/account')->group(function () {
+    Route::get('/', [StudentController::class, 'getProfile']);
+    Route::post('/update', [StudentController::class, 'updateProfile']);
+    Route::post('/change-password', [StudentController::class, 'changePassword']);
+});
+
+
