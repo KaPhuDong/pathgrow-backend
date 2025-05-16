@@ -7,10 +7,7 @@ use App\Repositories\AuthRepository;
 use App\Repositories\AuthRepositoryInterface;
 use App\Services\AuthService;
 use App\Services\AuthServiceInterface;
-use App\Repositories\GoalRepositoryInterface;
 use App\Repositories\GoalRepository;
-use App\Services\GoalServiceInterface;
-use App\Services\GoalService;
 
 use App\Repositories\JournalInclassRepositoryInterface;
 use App\Repositories\JournalInclassRepository;
@@ -29,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->bind(\App\Repositories\GoalRepository::class);
     }
 
     /**
