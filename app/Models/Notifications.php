@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model
+class Notifications extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['user_id', 'message', 'is_read'];
+    protected $fillable = ['user_id','type', 'message', 'is_read'];
 }

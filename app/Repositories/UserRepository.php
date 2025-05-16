@@ -16,4 +16,12 @@ class UserRepository
     {
         return Hash::check($password, $user->password);
     }
+
+    // ✅ THÊM: Lấy danh sách học sinh theo lớp
+    public function getStudentsByClass(int $classId)
+    {
+        return User::where('role', 'student')
+                   ->where('class_id', $classId)
+                   ->get();
+    }
 }

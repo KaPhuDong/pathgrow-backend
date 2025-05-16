@@ -58,7 +58,6 @@ class GoalController extends Controller
             'expect_myself',
         ]);
 
-        // ✅ Thêm user_id từ authenticated user
         $userId = Auth::id();
         $data['user_id'] = $userId;
 
