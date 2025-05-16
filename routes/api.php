@@ -25,9 +25,10 @@ Route::put('/inclass/{id}', [JournalInclassController::class, 'update']);
 Route::delete('/inclass/{id}', [JournalInclassController::class, 'destroy']);
 
 //route study plan selfStudy
-Route::get('/selfstudy', [JournalSelfstudyController::class, 'index']);
-Route::get('/selfstudy/{id}', [JournalSelfstudyController::class, 'show']);
-Route::get('/selfstudy-journal/{journalId}', [JournalSelfstudyController::class, 'listByJournal']);
-Route::post('/selfstudy', [JournalSelfstudyController::class, 'store']);
-Route::put('/selfstudy/{id}', [JournalSelfstudyController::class, 'update']);
-Route::delete('/selfstudy/{id}', [JournalSelfstudyController::class, 'destroy']);
+Route::prefix('selfstudy')->group(function () {
+    Route::get('/', [JournalSelfstudyController::class, 'index']);
+    Route::get('/{id}', [JournalSelfstudyController::class, 'show']);
+    Route::post('/', [JournalSelfstudyController::class, 'store']);
+    Route::put('/{id}', [JournalSelfstudyController::class, 'update']);
+    Route::delete('/{id}', [JournalSelfstudyController::class, 'destroy']);
+});

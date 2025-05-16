@@ -13,7 +13,7 @@ class JournalSelfstudyRepository
 
     public function getById($id)
     {
-        return JournalSelfstudyDetail::find($id);
+        return JournalSelfstudyDetail::findOrFail($id);
     }
 
     public function getList($journalId)
@@ -28,7 +28,9 @@ class JournalSelfstudyRepository
 
     public function update($id, array $data)
     {
-        return JournalSelfstudyDetail::where('id', $id)->update($data);
+        $entry = JournalSelfstudyDetail::findOrFail($id);
+        $entry->update($data);
+        return $entry;
     }
 
     public function delete($id)
