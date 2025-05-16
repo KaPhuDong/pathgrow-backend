@@ -1,4 +1,5 @@
 <?php
+// app/Http/Controllers/Api/JournalSelfstudyController.php
 
 namespace App\Http\Controllers\Api;
 
@@ -31,14 +32,45 @@ class JournalSelfstudyController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $created = $this->repository->create($request->all());
-        return response()->json($created, 201);
-    }
+{
+    $validated = $request->validate([
+        'journal_id' => 'required|integer',
+        'date' => 'required|date',
+        'skills_module' => 'nullable|string',
+        'lesson_summary' => 'nullable|string',
+        'time_allocation' => 'nullable|string',
+        'learning_resources' => 'nullable|string',
+        'learning_activities' => 'nullable|string',
+        'concentration' => 'nullable|integer',
+        'plan_follow_reflection' => 'nullable|string',
+        'work_evaluation' => 'nullable|string',
+        'reinforce_techniques' => 'nullable|string',
+        'notes' => 'nullable|string',
+    ]);
+
+    $created = $this->repository->create($validated);
+    return response()->json($created, 201); 
+}
+
 
     public function update(Request $request, $id)
     {
-        $updated = $this->repository->update($id, $request->all());
+        $validated = $request->validate([
+        'journal_id' => 'required|integer',
+        'date' => 'required|date',
+        'skills_module' => 'nullable|string',
+        'lesson_summary' => 'nullable|string',
+        'time_allocation' => 'nullable|string',
+        'learning_resources' => 'nullable|string',
+        'learning_activities' => 'nullable|string',
+        'concentration' => 'nullable|integer',
+        'plan_follow_reflection' => 'nullable|string',
+        'work_evaluation' => 'nullable|string',
+        'reinforce_techniques' => 'nullable|string',
+        'notes' => 'nullable|string',
+    ]);
+
+        $updated = $this->repository->update($id, $validated);
         return response()->json($updated);
     }
 
