@@ -15,8 +15,6 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 100)->notNullable();
             $table->text('description')->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
         });
     }
 

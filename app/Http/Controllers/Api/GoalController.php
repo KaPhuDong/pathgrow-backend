@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\GoalRepository;
@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Goal;
 
 
 
@@ -19,29 +20,27 @@ class GoalController extends Controller
         $this->goalRepository = $goalRepository;
     }
 
-    public function index()
+    public function show($semesterId, $subjectId)
     {
-        $goals = $this->goalRepository->all();
-        return response()->json($goals);
+        $userId = Auth::id(); 
+
+        $goal = Goal::where('user_id', $userId)
+                    ->where('semester_id', $semesterId)
+                    ->where('subject_id', $subjectId)
+                    ->first();
+
+         if (!$goal) {
+        return response()->json((object)[]);
     }
 
-    public function show($id)
-    {
-        $goal = $this->goalRepository->find($id);
-
-        if (!$goal) {
-            return response()->json(['message' => 'Mục tiêu không tồn tại'], 404);
-        }
-
-        return response()->json($goal);
+    return response()->json($goal);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'semester' => 'required|exists:semesters,id',
-            'subject' => 'required|string', // e.g., "it", "toeic"
+            'semester_id' => 'required|exists:semesters,id',
+            'subject_id' => 'required|exists:subjects,id',
             'expect_course' => 'nullable|string',
             'expect_teacher' => 'nullable|string',
             'expect_myself' => 'nullable|string',
@@ -51,29 +50,45 @@ class GoalController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $subject = Subject::where('key', $request->subject)->first();
-        if (!$subject) return response()->json(['message' => 'Subject không hợp lệ'], 404);
+        $data = $request->only([
+            'semester_id',
+            'subject_id',
+            'expect_course',
+            'expect_teacher',
+            'expect_myself',
+        ]);
 
-        $data = $request->only(['expect_course', 'expect_teacher', 'expect_myself']);
-        $data['user_id'] = $request->user_id;
-        $data['semester_id'] = $request->semester;
-        $data['subject_id'] = $subject->id;
+        $userId = Auth::id();
+        $data['user_id'] = $userId;
 
         $goal = $this->goalRepository->create($data);
-        return response()->json($goal, 201);
+
+        return response()->json([
+            'message' => 'Goal created successfully',
+            'data' => $goal,
+        ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $semesterId, $subjectId)
     {
-        $goal = $this->goalRepository->find($id);
+        $userId = Auth::id();
+
+        $goal = Goal::where('user_id', $userId)
+                    ->where('semester_id', $semesterId)
+                    ->where('subject_id', $subjectId)
+                    ->first();
 
         if (!$goal) {
-            return response()->json(['message' => 'Mục tiêu không tồn tại'], 404);
+            return response()->json(['message' => 'Goal not found'], 404);
         }
 
-        $data = $request->only(['expect_course', 'expect_teacher', 'expect_myself']);
-        $goal = $this->goalRepository->update($id, $data);
-        return response()->json($goal);
+        $goal->expect_course = $request->input('expect_course');
+        $goal->expect_teacher = $request->input('expect_teacher');
+        $goal->expect_myself = $request->input('expect_myself');
+        
+        $goal->save();
+
+        return response()->json(['message' => 'Goal updated successfully', 'goal' => $goal], 200);
     }
 
     public function destroy($id)

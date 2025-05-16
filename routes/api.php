@@ -11,6 +11,11 @@ use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
 use App\Http\Controllers\Api\ListStudentController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\SemesterController;
+use App\Http\Controllers\Api\SubjectController;
+use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\TeacherController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -22,20 +27,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::prefix('goals')->group(function () {
-    Route::get('/', [GoalController::class, 'index']);
-    Route::get('{id}', [GoalController::class, 'show']);
-    Route::post('/', [GoalController::class, 'store']);
-    Route::put('{id}', [GoalController::class, 'update']);
-    Route::delete('{id}', [GoalController::class, 'destroy']);
+Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
+    Route::get('{semester}/{subject}', [GoalController::class, 'show']);
+    Route::post('{semester}/{subject}', [GoalController::class, 'store']);
+    Route::put('{semester}/{subject}', [GoalController::class, 'update']);
 });
 
-Route::prefix('goal-questions')->group(function () {
+Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [GoalQuestionController::class, 'index']);
     Route::get('{id}', [GoalQuestionController::class, 'show']);
     Route::post('/', [GoalQuestionController::class, 'store']);
     Route::put('{id}', [GoalQuestionController::class, 'update']);
-    Route::delete('{id}', [GoalQuestionController::class, 'destroy']);
+    Route::delete('{id}', [GoalQuestionController::class, 'destroy']); 
 });
 
 //route study plan Inclass
@@ -59,14 +62,37 @@ Route::prefix('notifications')->group(function () {
     Route::post('/', [NotificationsController::class, 'store']);
     Route::put('{id}/read', [NotificationsController::class, 'markAsRead']);
     Route::delete('{id}', [NotificationsController::class, 'destroy']);
+});
 
 Route::apiResource('classes', ClassController::class);
 Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
-  
-Route::prefix('admin')->group(function () {
+
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('/users', [AdminController::class, 'index']);
     Route::post('/users', [AdminController::class, 'store']);
     Route::get('/users/{id}', [AdminController::class, 'show']);
     Route::put('/users/{id}', [AdminController::class, 'update']);
     Route::delete('/users/{id}', [AdminController::class, 'destroy']);
+});
+
+Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+    Route::get('/student/profile', [StudentController::class, 'profile']);
+});
+
+Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard']);
+});
+
+// Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+//     Route::get('/admin/users', [AdminController::class, 'index']);
+// });
+
+// Semester routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/semesters', [SemesterController::class, 'index']);
+});
+
+// Subject routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/subjects', [SubjectController::class, 'index']);
 });
