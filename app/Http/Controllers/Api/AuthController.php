@@ -3,18 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-<<<<<<< HEAD
-use Illuminate\Http\Request;
-use App\Services\AuthServiceInterface;
-
-class AuthController extends Controller
-{
-    protected $authService;
-
-    public function __construct(AuthServiceInterface $authService)
-    {
-        $this->authService = $authService;
-=======
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -26,20 +14,10 @@ class AuthController extends Controller
     public function __construct(UserRepository $users)
     {
         $this->users = $users;
->>>>>>> ec2cea1b59ba16df5998e323b62b032c2e0d41d6
     }
 
     public function login(Request $request)
     {
-<<<<<<< HEAD
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-            'role'     => 'required|string',
-        ]);
-
-        return $this->authService->login($request);
-=======
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email',
             'password' => 'required|string|min:6',
@@ -76,6 +54,5 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logout successful']);
->>>>>>> ec2cea1b59ba16df5998e323b62b032c2e0d41d6
     }
 }
