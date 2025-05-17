@@ -47,4 +47,12 @@ class UserRepository
         $user->password = Hash::make($newPassword);
         return $user->save();
     }
+
+    //Lấy danh sách học sinh theo lớp
+    public function getStudentsByClass(int $classId)
+    {
+        return User::where('role', 'student')
+                   ->where('class_id', $classId)
+                   ->get();
+    }
 }

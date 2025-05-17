@@ -14,7 +14,6 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\StudentController;
-use App\Http\Controllers\Api\TeacherController;
 
 
 Route::get('/user', function (Request $request) {
@@ -93,9 +92,8 @@ Route::apiResource('classes', ClassController::class);
 Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
 
 //teacher routes
-Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
-    Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard']);
-});
+Route::apiResource('classes', ClassController::class);
+Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
 
 //admin routes
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
