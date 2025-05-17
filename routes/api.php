@@ -92,6 +92,11 @@ Route::prefix('notifications')->group(function () {
 Route::apiResource('classes', ClassController::class);
 Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
 
+//teacher routes
+Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard']);
+});
+
 //admin routes
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('/users', [AdminController::class, 'index']);
