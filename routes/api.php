@@ -14,19 +14,19 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\StudentController;
-use App\Http\Controllers\Api\TeacherController;
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+//auth routes
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+//goals routes
 Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
     Route::get('{semester}/{subject}', [GoalController::class, 'show']);
     Route::post('{semester}/{subject}', [GoalController::class, 'store']);
@@ -41,21 +41,44 @@ Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
     Route::delete('{id}', [GoalQuestionController::class, 'destroy']); 
 });
 
-//route study plan Inclass
+// student profile routes
+Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+    Route::get('/student/profile', [StudentController::class, 'profile']);
+});
+
+// semester routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/semesters', [SemesterController::class, 'index']);
+});
+
+// subject routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/subjects', [SubjectController::class, 'index']);
+});
+
+//study plan inclass routes
 Route::get('/inclass', [JournalInclassController::class, 'index']);
 Route::post('/inclass', [JournalInclassController::class, 'store']);
 Route::put('/inclass/{id}', [JournalInclassController::class, 'update']);
 Route::delete('/inclass/{id}', [JournalInclassController::class, 'destroy']);
 
-//route study plan selfStudy
-Route::get('/selfstudy', [JournalSelfstudyController::class, 'index']);
-Route::get('/selfstudy/{id}', [JournalSelfstudyController::class, 'show']);
-Route::get('/selfstudy-journal/{journalId}', [JournalSelfstudyController::class, 'listByJournal']);
-Route::post('/selfstudy', [JournalSelfstudyController::class, 'store']);
-Route::put('/selfstudy/{id}', [JournalSelfstudyController::class, 'update']);
-Route::delete('/selfstudy/{id}', [JournalSelfstudyController::class, 'destroy']);
+//study plan selfstudy routes
+Route::prefix('selfstudy')->group(function () {
+    Route::get('/', [JournalSelfstudyController::class, 'index']);
+    Route::get('/{id}', [JournalSelfstudyController::class, 'show']);
+    Route::post('/', [JournalSelfstudyController::class, 'store']);
+    Route::put('/{id}', [JournalSelfstudyController::class, 'update']);
+    Route::delete('/{id}', [JournalSelfstudyController::class, 'destroy']);
+});
 
-//route notification (BỎ middleware để test không cần login)
+//student account routes
+Route::prefix('student/account')->group(function () {
+    Route::get('/', [StudentController::class, 'getProfile']);
+    Route::post('/update', [StudentController::class, 'updateProfile']);
+    Route::post('/change-password', [StudentController::class, 'changePassword']);
+});
+
+//notification routes (BỎ middleware để test không cần login)
 Route::prefix('notifications')->group(function () {
     Route::get('/', [NotificationsController::class, 'index']);
     Route::get('{id}', [NotificationsController::class, 'getByUser']);
@@ -64,35 +87,19 @@ Route::prefix('notifications')->group(function () {
     Route::delete('{id}', [NotificationsController::class, 'destroy']);
 });
 
+//classes routes
 Route::apiResource('classes', ClassController::class);
 Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
 
+//teacher routes
+Route::apiResource('classes', ClassController::class);
+Route::get('/list-student/class/{classId}', [ListStudentController::class, 'listByClass']);
+
+//admin routes
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('/users', [AdminController::class, 'index']);
     Route::post('/users', [AdminController::class, 'store']);
     Route::get('/users/{id}', [AdminController::class, 'show']);
     Route::put('/users/{id}', [AdminController::class, 'update']);
     Route::delete('/users/{id}', [AdminController::class, 'destroy']);
-});
-
-Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
-    Route::get('/student/profile', [StudentController::class, 'profile']);
-});
-
-Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
-    Route::get('/teacher/dashboard', [TeacherController::class, 'dashboard']);
-});
-
-// Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-//     Route::get('/admin/users', [AdminController::class, 'index']);
-// });
-
-// Semester routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/semesters', [SemesterController::class, 'index']);
-});
-
-// Subject routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/subjects', [SubjectController::class, 'index']);
 });
