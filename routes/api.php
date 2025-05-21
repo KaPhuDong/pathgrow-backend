@@ -105,9 +105,11 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::delete('/users/{id}', [AdminController::class, 'destroy']);
 });
 
-Route::prefix('student-calendar')->group(function () {
-    Route::get('/', [StudentCalendarController::class, 'index']);     
-    Route::post('/', [StudentCalendarController::class, 'store']);    
-    Route::delete('/{id}', [StudentCalendarController::class, 'destroy']); 
+Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [StudentCalendarController::class, 'index']);
+    Route::post('/', [StudentCalendarController::class, 'store']);
+    Route::delete('{id}', [StudentCalendarController::class, 'destroy']);
 });
+
+
 
