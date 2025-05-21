@@ -31,6 +31,8 @@ class GoalSeeder extends Seeder
             'expect_course' => 'Learn more about ReactJS',
             'expect_teacher' => 'Attend all the classes',
             'expect_myself' => 'Complete all homework assignments',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }
