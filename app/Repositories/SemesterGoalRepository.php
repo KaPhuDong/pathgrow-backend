@@ -2,40 +2,40 @@
 
 namespace App\Repositories;
 
-use App\Models\Goal;
+use App\Models\SemesterGoal;
 
-class GoalRepository
+class SemesterGoalRepository
 {
     public function all()
     {
-        return Goal::all();
+        return SemesterGoal::all();
     }
 
     public function find($id)
     {
-        return Goal::find($id);
+        return SemesterGoal::find($id);
     }
 
     public function create(array $data)
     {
-        return Goal::create($data);
+        return SemesterGoal::create($data);
     }
 
     public function update($id, array $data)
     {
-        $goal = Goal::findOrFail($id);
+        $goal = SemesterGoal::findOrFail($id);
         $goal->update($data);
         return $goal;
     }
 
     public function delete($id)
     {
-        return Goal::destroy($id);
+        return SemesterGoal::destroy($id);
     }
 
     public function findByUserSemesterSubject($userId, $semesterId, $subjectId)
     {
-        return Goal::where('user_id', $userId)
+        return SemesterGoal::where('user_id', $userId)
             ->where('semester_id', $semesterId)
             ->where('subject_id', $subjectId)
             ->first();

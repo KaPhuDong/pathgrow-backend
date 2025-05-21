@@ -11,6 +11,7 @@ class Semester extends Model
 
     // Định nghĩa bảng
     protected $table = 'semesters';
+    public $timestamps = false;
 
     // Các trường có thể gán giá trị (fillable)
     protected $fillable = [
@@ -20,6 +21,6 @@ class Semester extends Model
     // Quan hệ với bảng Goal
     public function goals()
     {
-        return $this->hasMany(Goal::class);
+        return $this->hasMany(SemesterGoal::class);
     }
 }
