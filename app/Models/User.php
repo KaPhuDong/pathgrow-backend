@@ -37,4 +37,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Classes::class, 'class_id');
     }
+    public function achievements()
+    {
+        return $this->belongsToMany(Achievement::class)
+                    ->withTimestamps()
+                    ->withPivot('achieved_at');
+    }
 }

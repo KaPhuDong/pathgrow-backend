@@ -59,6 +59,14 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'cloudinary' => [
+        'driver' => 'cloudinary',
+        'url' => env('CLOUDINARY_URL'), // hoặc thay bằng cấu hình cụ thể:
+        'cloud' => env('CLOUDINARY_CLOUD_NAME'),
+        'key' => env('CLOUDINARY_API_KEY'),
+        'secret' => env('CLOUDINARY_API_SECRET'),
+        'secure' => env('CLOUDINARY_SECURE_URL', true),
+    ],
 
     ],
 
