@@ -9,10 +9,8 @@ class Subject extends Model
 {
     use HasFactory;
 
-    // Định nghĩa bảng
+    public $timestamps = false;
     protected $table = 'subjects';
-
-    // Các trường có thể gán giá trị (fillable)
     protected $fillable = [
         'name',  // Ví dụ về tên môn học
     ];

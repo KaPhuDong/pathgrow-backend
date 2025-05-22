@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             SemesterSeeder::class,
             SubjectSeeder::class,
             UsersTableSeeder::class,
-            GoalSeeder::class
+            SubjectSeeder::class,
+            SemesterSeeder::class,
+            GoalSeeder::class,
         ]);
     }
 }

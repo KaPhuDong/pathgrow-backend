@@ -12,7 +12,7 @@ class Semester extends Model
     // Định nghĩa bảng
     protected $table = 'semesters';
 
-    // Các trường có thể gán giá trị (fillable)
+    public $timestamps = false;
     protected $fillable = [
         'name',  // Ví dụ về tên học kỳ
     ];
