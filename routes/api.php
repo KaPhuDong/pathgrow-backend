@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\AchievementController;
 use App\Http\Controllers\Api\StudentCalendarController;
+use App\Http\Controllers\Api\ClassManagementController;
 
 
 Route::get('/user', function (Request $request) {
@@ -118,5 +119,15 @@ Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function ()
     Route::get('/', [StudentCalendarController::class, 'index']);
     Route::post('/', [StudentCalendarController::class, 'store']);
     Route::delete('{id}', [StudentCalendarController::class, 'destroy']);
+});
+
+
+//ClassManagement Routes
+Route::prefix('classesManagement')->group(function () {
+    Route::get('/', [ClassManagementController::class, 'index']);
+    Route::post('/', [ClassManagementController::class, 'store']);
+    Route::put('{id}', [ClassManagementController::class, 'update']);
+    Route::delete('{id}', [ClassManagementController::class, 'destroy']);
+    Route::get('{id}', [ClassManagementController::class, 'show']);
 });
 

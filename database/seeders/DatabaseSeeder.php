@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             SemesterSeeder::class,
             GoalSeeder::class,
+            ClassSubjectSeeder::class,
         ]);
     }
 }
