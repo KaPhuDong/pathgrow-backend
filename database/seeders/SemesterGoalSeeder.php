@@ -25,9 +25,9 @@ class SemesterGoalSeeder extends Seeder
 
         // Tạo dữ liệu cho bảng SemesterGoal
         SemesterGoal::create([
-            'user_id' => 1, // Giả sử có user_id = 1
-            'semester_id' => $semester->id, // Dùng ID của semester
-            'subject_id' => $subject->id, // Dùng ID của subject
+            'user_id' => 4, 
+            'semester_id' => $semester->id, 
+            'subject_id' => $subject->id,
             'expect_course' => 'Learn more about ReactJS',
             'expect_teacher' => 'Attend all the classes',
             'expect_myself' => 'Complete all homework assignments',

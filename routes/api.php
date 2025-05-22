@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\AchievementController;
+use App\Http\Controllers\Api\StudentCalendarController;
 use App\Http\Controllers\Api\WeeklyStudyPlanController;
 use App\Http\Controllers\Api\WeeklyGoalController;
 use App\Http\Controllers\Api\InClassPlanController;
@@ -42,7 +44,7 @@ Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
     Route::get('{id}', [GoalQuestionController::class, 'show']);
     Route::post('/', [GoalQuestionController::class, 'store']);
     Route::put('{id}', [GoalQuestionController::class, 'update']);
-    Route::delete('{id}', [GoalQuestionController::class, 'destroy']); 
+    Route::delete('{id}', [GoalQuestionController::class, 'destroy']);
 });
 
 // student profile routes
@@ -116,3 +118,19 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::put('/users/{id}', [AdminController::class, 'update']);
     Route::delete('/users/{id}', [AdminController::class, 'destroy']);
 });
+
+//achievement routes
+Route::prefix('achievements')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [AchievementController::class, 'index']);
+    Route::post('/', [AchievementController::class, 'store']);
+    Route::put('{id}', [AchievementController::class, 'update']);
+    Route::delete('{id}', [AchievementController::class, 'destroy']);
+});
+
+//student calendar routes
+Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [StudentCalendarController::class, 'index']);
+    Route::post('/', [StudentCalendarController::class, 'store']);
+    Route::delete('{id}', [StudentCalendarController::class, 'destroy']);
+});
+

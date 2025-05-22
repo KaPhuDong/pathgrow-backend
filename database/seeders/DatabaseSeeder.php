@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Seeders;
+
+use App\Models\StudentCalendar;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,9 +21,10 @@ class DatabaseSeeder extends Seeder
             WeeklyStudyPlanSeeder::class,
             WeeklyGoalSeeder::class,
             SelfStudyPlanSeeder::class,
+            SelfStudySubjectSeeder::class,
             InClassPlanSeeder::class,
             InClassSubjectSeeder::class,
-            SelfStudySubjectSeeder::class,
+            StudentCalendarSeeder::class,
         ]);
     }
 }
