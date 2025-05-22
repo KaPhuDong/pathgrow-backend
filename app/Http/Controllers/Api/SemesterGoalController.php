@@ -2,29 +2,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\GoalRepository;
+use App\Repositories\SemesterGoalRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Goal;
+use App\Models\SemesterGoal;
 
 
 
-class GoalController extends Controller
+class SemesterGoalController extends Controller
 {
     protected $goalRepository;
 
-    public function __construct(GoalRepository $goalRepository)
+    public function __construct(SemesterGoalRepository $goalRepository)
     {
         $this->goalRepository = $goalRepository;
     }
 
     public function show($semesterId, $subjectId)
     {
-        $userId = Auth::id(); 
+        $userId = Auth::id();
 
-        $goal = Goal::where('user_id', $userId)
+        $goal = SemesterGoal::where('user_id', $userId)
                     ->where('semester_id', $semesterId)
                     ->where('subject_id', $subjectId)
                     ->first();
@@ -73,7 +73,7 @@ class GoalController extends Controller
     {
         $userId = Auth::id();
 
-        $goal = Goal::where('user_id', $userId)
+        $goal = SemesterGoal::where('user_id', $userId)
                     ->where('semester_id', $semesterId)
                     ->where('subject_id', $subjectId)
                     ->first();

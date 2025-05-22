@@ -11,15 +11,13 @@ class Semester extends Model
 
     // Định nghĩa bảng
     protected $table = 'semesters';
-
     public $timestamps = false;
-    protected $fillable = [
-        'name',  // Ví dụ về tên học kỳ
-    ];
+
+    protected $fillable = ['name'];
 
     // Quan hệ với bảng Goal
     public function goals()
     {
-        return $this->hasMany(Goal::class);
+        return $this->hasMany(SemesterGoal::class);
     }
 }

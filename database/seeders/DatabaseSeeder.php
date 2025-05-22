@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\StudentCalendar;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,11 +16,16 @@ class DatabaseSeeder extends Seeder
             ClassSeeder::class,
             SemesterSeeder::class,
             SubjectSeeder::class,
-            UsersTableSeeder::class,
-            SubjectSeeder::class,
-            SemesterSeeder::class,
-            GoalSeeder::class,
             ClassSubjectSeeder::class,
+            UsersTableSeeder::class,
+            SemesterGoalSeeder::class,
+            WeeklyStudyPlanSeeder::class,
+            WeeklyGoalSeeder::class,
+            SelfStudyPlanSeeder::class,
+            SelfStudySubjectSeeder::class,
+            InClassPlanSeeder::class,
+            InClassSubjectSeeder::class,
+            StudentCalendarSeeder::class,
         ]);
     }
 }
