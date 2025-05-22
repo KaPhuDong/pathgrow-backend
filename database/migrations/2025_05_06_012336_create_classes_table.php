@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->integer('students')->default(0);
             $table->string('color', 7)->notNullable();
             $table->string('slug', 20)->unique()->notNullable();
-            $table->timestamps();
         });
     }
     /**

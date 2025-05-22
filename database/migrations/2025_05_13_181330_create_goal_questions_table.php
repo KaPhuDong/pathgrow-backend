@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedInteger('semester_id'); // ✅ thay vì dùng integer thường
             $table->unsignedInteger('subject_id'); // thay enum bằng khóa ngoại
             $table->text('question');
-            $table->timestamps();
 
             // Foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

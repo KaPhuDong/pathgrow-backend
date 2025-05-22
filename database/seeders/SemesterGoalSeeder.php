@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Goal;
+use App\Models\SemesterGoal;
 use App\Models\Semester;
 use App\Models\Subject;
 use App\Models\User;
 
-class GoalSeeder extends Seeder
+class SemesterGoalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,11 +23,11 @@ class GoalSeeder extends Seeder
         // Tạo dữ liệu cho bảng Subject
         $subject = Subject::create(['name' => 'IT English']);
 
-        // Tạo dữ liệu cho bảng Goal
-        Goal::create([
-            'user_id' => 1, 
+        // Tạo dữ liệu cho bảng SemesterGoal
+        SemesterGoal::create([
+            'user_id' => 4, 
             'semester_id' => $semester->id, 
-            'subject_id' => $subject->id, 
+            'subject_id' => $subject->id,
             'expect_course' => 'Learn more about ReactJS',
             'expect_teacher' => 'Attend all the classes',
             'expect_myself' => 'Complete all homework assignments',

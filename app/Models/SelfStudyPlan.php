@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Subject extends Model
+class SelfStudyPlan extends Model
 {
-    protected $fillable = ['name'];
+    protected $table = 'self_study_plans';
+    protected $fillable = ['weekly_study_plan_id'];
+    
     public $timestamps = false;
 
-    public function inClassSubjects()
+    public function weeklyStudyPlan()
     {
-        return $this->hasMany(InClassSubject::class);
+        return $this->belongsTo(WeeklyStudyPlan::class);
     }
 
     public function selfStudySubjects()

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('goals', function (Blueprint $table) {
+        Schema::create('semester_goals', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('semester_id'); // ✅ thay vì 'semester', dùng 'semester_id' và làm khóa ngoại
@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('expect_course')->nullable();
             $table->text('expect_teacher')->nullable();
             $table->text('expect_myself')->nullable();
-            $table->timestamps();
 
             // Foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('goals');
+        Schema::dropIfExists('semester_goals');
     }
 };
