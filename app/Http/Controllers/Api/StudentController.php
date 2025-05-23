@@ -7,6 +7,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class StudentController extends Controller
 {
@@ -17,22 +18,29 @@ class StudentController extends Controller
         $this->userRepo = $userRepo;
     }
 
-    // Lấy thông tin profile user hiện tại
     public function getProfile()
     {
-        return response()->json(Auth::user());
+        $user = Auth::user()->load('class');
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $user->avatar ?? 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+            'avatar_public_id' => $user->avatar_public_id,
+            'class' => $user->class ? $user->class->name : null,
+            'class_id' => $user->class_id,
+            'role' => $user->role,
+        ]);
     }
 
-    // Cập nhật profile (tên, email, avatar, class_id)
     public function updateProfile(Request $request)
     {
-        $userId = Auth::id(); 
+        $userId = Auth::id();
 
         $rules = [
             'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $userId,
-            'class_id' => 'nullable|integer|exists:classes,id',
-            'avatar' => 'nullable|image|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -41,21 +49,62 @@ class StudentController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $data = $request->only(['name', 'email', 'class_id']);
+        $data = $request->only(['name']);
 
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar');
+            $user = Auth::user();
+
+            try {
+                if ($user->avatar_public_id) {
+                    Cloudinary::uploadApi()->destroy($user->avatar_public_id);
+                }
+
+                $uploadResult = Cloudinary::uploadApi()->upload(
+                    $request->file('avatar')->getRealPath(),
+                    [
+                        'folder' => 'avatars',
+                        'public_id' => 'avatar_' . $userId . '_' . time(),
+                        'transformation' => [
+                            'quality' => 'auto:eco',
+                            'fetch_format' => 'auto',
+                            'width' => 200,
+                            'height' => 200,
+                            'crop' => 'fill',
+                        ]
+                    ]
+                );
+
+                $data['avatar'] = $uploadResult['secure_url'];
+                $data['avatar_public_id'] = $uploadResult['public_id'];
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Không thể tải ảnh lên Cloudinary: ' . $e->getMessage()], 500);
+            }
         }
 
-        $updatedUser = $this->userRepo->updateProfile($userId, $data);
+        try {
+            $updatedUser = $this->userRepo->updateProfile($userId, $data);
+            if (!$updatedUser) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
 
-        return response()->json([
-            'message' => 'Profile updated successfully',
-            'user' => $updatedUser,
-        ]);
+            return response()->json([
+                'message' => 'Profile updated successfully',
+                'user' => [
+                    'id' => $updatedUser->id,
+                    'name' => $updatedUser->name,
+                    'email' => $updatedUser->email,
+                    'avatar' => $updatedUser->avatar ?? 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                    'avatar_public_id' => $updatedUser->avatar_public_id,
+                    'class_id' => $updatedUser->class_id,
+                    'role' => $updatedUser->role,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update profile: ' . $e->getMessage()], 500);
+        }
     }
 
-    // Đổi mật khẩu
+    //Change Password
     public function changePassword(Request $request)
     {
         $user = Auth::user();
