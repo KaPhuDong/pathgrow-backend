@@ -841,7 +841,6 @@ return array(
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
     'Database\\Seeders\\InClassPlanSeeder' => $baseDir . '/database/seeders/InClassPlanSeeder.php',
     'Database\\Seeders\\InClassSubjectSeeder' => $baseDir . '/database/seeders/InClassSubjectSeeder.php',
-    'Database\\Seeders\\JournalsTableSeeder' => $baseDir . '/database/seeders/JournalsTableSeeder.php',
     'Database\\Seeders\\SelfStudyPlanSeeder' => $baseDir . '/database/seeders/SelfStudyPlanSeeder.php',
     'Database\\Seeders\\SelfStudySubjectSeeder' => $baseDir . '/database/seeders/SelfStudySubjectSeeder.php',
     'Database\\Seeders\\SemesterGoalSeeder' => $baseDir . '/database/seeders/SemesterGoalSeeder.php',

@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\InClassPlanController;
 use App\Http\Controllers\Api\InClassSubjectController;
 use App\Http\Controllers\Api\SelfStudyPlanController;
 use App\Http\Controllers\Api\SelfStudySubjectController;
+use App\Http\Controllers\Api\TeacherScheduleController;
 
 
 Route::get('/user', function (Request $request) {
@@ -134,3 +135,15 @@ Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function ()
     Route::delete('{id}', [StudentCalendarController::class, 'destroy']);
 });
 
+
+
+// //student calendar routes
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('teacher-schedules', TeacherScheduleController::class);
+// });
+
+Route::prefix('teacher-schedule')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [TeacherScheduleController::class, 'index']);
+    Route::post('/', [TeacherScheduleController::class, 'store']);
+    Route::delete('{id}', [TeacherScheduleController::class, 'destroy']);
+});

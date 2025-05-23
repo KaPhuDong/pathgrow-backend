@@ -1362,7 +1362,6 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\InClassPlanSeeder' => __DIR__ . '/../..' . '/database/seeders/InClassPlanSeeder.php',
         'Database\\Seeders\\InClassSubjectSeeder' => __DIR__ . '/../..' . '/database/seeders/InClassSubjectSeeder.php',
-        'Database\\Seeders\\JournalsTableSeeder' => __DIR__ . '/../..' . '/database/seeders/JournalsTableSeeder.php',
         'Database\\Seeders\\SelfStudyPlanSeeder' => __DIR__ . '/../..' . '/database/seeders/SelfStudyPlanSeeder.php',
         'Database\\Seeders\\SelfStudySubjectSeeder' => __DIR__ . '/../..' . '/database/seeders/SelfStudySubjectSeeder.php',
         'Database\\Seeders\\SemesterGoalSeeder' => __DIR__ . '/../..' . '/database/seeders/SemesterGoalSeeder.php',
