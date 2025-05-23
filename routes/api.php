@@ -142,5 +142,17 @@ Route::prefix('classesManagement')->group(function () {
     Route::put('{id}', [ClassManagementController::class, 'update']);
     Route::delete('{id}', [ClassManagementController::class, 'destroy']);
     Route::get('{id}', [ClassManagementController::class, 'show']);
+
+    // Add/remove subjects
+    Route::post('{id}/add-subjects', [ClassManagementController::class, 'addSubjects']);
+    Route::post('{id}/remove-subjects', [ClassManagementController::class, 'removeSubjects']);
+
+    // Add/remove students
+    Route::post('{id}/add-students', [ClassManagementController::class, 'addStudents']);
+    Route::post('remove-students', [ClassManagementController::class, 'removeStudents']);
+
+    // Add/remove teachers
+    Route::post('{id}/add-teachers', [ClassManagementController::class, 'addTeachers']);
+    Route::post('remove-teachers', [ClassManagementController::class, 'removeTeachers']);
 });
 

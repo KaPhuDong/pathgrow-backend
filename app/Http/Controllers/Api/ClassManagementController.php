@@ -110,4 +110,54 @@ class ClassManagementController extends Controller
 
         return response()->json(['message' => 'Class deleted successfully']);
     }
+
+    // Thêm vào ClassManagementController.php
+
+    public function addSubjects($id, Request $request)
+    {
+        $request->validate(['subjects' => 'required|array']);
+        $success = $this->classRepository->addSubjects($id, $request->subjects);
+
+        return $success
+            ? response()->json(['message' => 'Subjects added successfully'])
+            : response()->json(['message' => 'Class not found'], 404);
+    }
+
+    public function removeSubjects($id, Request $request)
+    {
+        $request->validate(['subjects' => 'required|array']);
+        $success = $this->classRepository->removeSubjects($id, $request->subjects);
+
+        return $success
+            ? response()->json(['message' => 'Subjects removed successfully'])
+            : response()->json(['message' => 'Class not found'], 404);
+    }
+
+    public function addStudents($id, Request $request)
+    {
+        $request->validate(['students' => 'required|array']);
+        $this->classRepository->addStudents($id, $request->students);
+        return response()->json(['message' => 'Students added successfully']);
+    }
+
+    public function removeStudents(Request $request)
+    {
+        $request->validate(['students' => 'required|array']);
+        $this->classRepository->removeStudents($request->students);
+        return response()->json(['message' => 'Students removed successfully']);
+    }
+
+    public function addTeachers($id, Request $request)
+    {
+        $request->validate(['teachers' => 'required|array']);
+        $this->classRepository->addTeachers($id, $request->teachers);
+        return response()->json(['message' => 'Teachers added successfully']);
+    }
+
+    public function removeTeachers(Request $request)
+    {
+        $request->validate(['teachers' => 'required|array']);
+        $this->classRepository->removeTeachers($request->teachers);
+        return response()->json(['message' => 'Teachers removed successfully']);
+    }
 }
