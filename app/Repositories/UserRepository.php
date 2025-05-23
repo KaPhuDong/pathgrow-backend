@@ -17,6 +17,7 @@ class UserRepository
         return Hash::check($password, $user->password);
     }
 
+    // THÊM: Lấy danh sách học sinh theo lớp
     public function findById(int $id): ?User
     {
         return User::find($id);

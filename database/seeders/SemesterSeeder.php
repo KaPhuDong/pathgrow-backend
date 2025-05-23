@@ -10,6 +10,7 @@ class SemesterSeeder extends Seeder
 {
     public function run(): void
     {
+        
         DB::table('semesters')->insert([
             [
                 'name' => 'Semester 1',
