@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class UserRepository
 {
@@ -30,17 +29,14 @@ class UserRepository
             return null;
         }
 
-        if (isset($data['avatar']) && $data['avatar'] instanceof \Illuminate\Http\UploadedFile) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-            $path = $data['avatar']->store('avatars', 'public');
-            $user->avatar = $path;
-        }
-
         $user->name = $data['name'] ?? $user->name;
         $user->email = $data['email'] ?? $user->email;
         $user->class_id = $data['class_id'] ?? $user->class_id;
+
+        if (isset($data['avatar']) && is_string($data['avatar'])) {
+            $user->avatar = $data['avatar'];
+            $user->avatar_public_id = $data['avatar_public_id'] ?? null;
+        }
 
         $user->save();
 
@@ -58,7 +54,6 @@ class UserRepository
         return $user->save();
     }
 
-    //Lấy danh sách học sinh theo lớp
     public function getStudentsByClass(int $classId)
     {
         return User::where('role', 'student')

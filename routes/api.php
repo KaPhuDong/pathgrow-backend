@@ -73,10 +73,10 @@ Route::prefix('selfstudy')->group(function () {
 });
 
 //student account routes
-Route::prefix('student/account')->group(function () {
-    Route::get('/', [StudentController::class, 'getProfile']);
-    Route::post('/update', [StudentController::class, 'updateProfile']);
-    Route::post('/change-password', [StudentController::class, 'changePassword']);
+Route::middleware('auth:sanctum')->prefix('student')->group(function () {
+    Route::get('/account', [StudentController::class, 'getProfile']);
+    Route::post('/account/update', [StudentController::class, 'updateProfile']);
+    Route::post('/account/change-password', [StudentController::class, 'changePassword']);
 });
 
 //notification routes (BỎ middleware để test không cần login)
