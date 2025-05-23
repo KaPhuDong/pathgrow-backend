@@ -10,7 +10,7 @@ class UsersTableSeeder extends Seeder
 {
     public function run(): void
     {
-        // Tạo Admin và 2 giáo viên + 2 học sinh mẫu
+       // Create an Admin, 2 sample teachers, and 2 sample students
         DB::table('users')->insert([
             [
                 'name' => 'Admin User',
@@ -18,7 +18,8 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'class_id' => null,
-                'avatar' => 'https://i.pravatar.cc/150?u=admin',
+                'avatar' => 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                'avatar_public_id' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -28,7 +29,8 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'teacher',
                 'class_id' => 1,
-                'avatar' => 'https://i.pravatar.cc/150?u=teacher1',
+                'avatar' => 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                'avatar_public_id' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -38,7 +40,8 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'teacher',
                 'class_id' => 2,
-                'avatar' => 'https://i.pravatar.cc/150?u=teacher2',
+                'avatar' => 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                'avatar_public_id' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -48,7 +51,8 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'student',
                 'class_id' => 1,
-                'avatar' => 'https://i.pravatar.cc/150?u=student1',
+                'avatar' => 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                'avatar_public_id' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -58,13 +62,14 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'student',
                 'class_id' => 2,
-                'avatar' => 'https://i.pravatar.cc/150?u=student2',
+                'avatar' => 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                'avatar_public_id' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
 
-        // Danh sách học sinh từng lớp
+         // List of students in each class
         $students = [
             1 => [
                 "Zoăn Thị Bằng", "Y Xa Bế", "Coor Chăng", "Phạm Đức Đạt", "Trần Công Đoàn",
@@ -95,13 +100,13 @@ class UsersTableSeeder extends Seeder
             6 => array_map(fn($i) => "Student $i", range(1, 21)),
         ];
 
-        // Thêm học sinh vào DB
+       // Insert students into the database
         foreach ($students as $classId => $names) {
             foreach ($names as $index => $name) {
-                // Bỏ qua 2 học sinh mẫu đã thêm ở đầu (student1@example.com và student2@example.com)
+                 // Skip 2 sample students added above (student1@example.com and student2@example.com)
                 if (
-                    ($classId === 1 && $index === 0) || // Trùng với Student One
-                    ($classId === 2 && $index === 0)    // Trùng với Student Two
+                    ($classId === 1 && $index === 0) || // Duplicate of Student One
+                    ($classId === 2 && $index === 0)    // Duplicate of Student Two
                 ) {
                     continue;
                 }
@@ -114,7 +119,8 @@ class UsersTableSeeder extends Seeder
                     'password' => Hash::make('password'),
                     'role' => 'student',
                     'class_id' => $classId,
-                    'avatar' => 'https://i.pravatar.cc/150?u=' . urlencode($name),
+                    'avatar' => 'https://uuc.edu.vn/uploads/2025/04/16/67fecff2bdd55.webp',
+                    'avatar_public_id' => null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

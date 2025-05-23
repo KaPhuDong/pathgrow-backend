@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'teacher', 'student'])->default('student');
             $table->unsignedInteger('class_id')->nullable();
             $table->string('avatar', 255)->nullable();
+            $table->string('avatar_public_id', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->nullable();

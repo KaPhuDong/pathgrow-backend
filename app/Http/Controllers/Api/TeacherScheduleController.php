@@ -3,118 +3,44 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\StudentCalendarRepository;
 use Illuminate\Http\Request;
-use App\Repositories\TeacherScheduleRepository;
-use Illuminate\Support\Facades\Auth;
 
 class TeacherScheduleController extends Controller
 {
-    protected $repo;
+    protected $calendarRepo;
 
-    public function __construct(TeacherScheduleRepository $repo)
+    public function __construct(StudentCalendarRepository $calendarRepo)
     {
-        $this->repo = $repo;
+        $this->calendarRepo = $calendarRepo;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $teacherId = Auth::id();
-        $schedules = $this->repo->getAll($teacherId);
-        return response()->json($schedules);
+        return response()->json($this->calendarRepo->getByUser());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-{
-    $teacherId = Auth::id();
-    if (!$teacherId) {
-        return response()->json(['message' => 'Unauthenticated'], 401);
-    }
-
-    $validated = $request->validate([
-        'student_id' => 'nullable|exists:users,id',
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'start_time' => 'required|date',
-        'end_time' => 'required|date|after_or_equal:start_time',
-        'remind_at' => 'nullable|date|before_or_equal:start_time',
-        'notified' => 'boolean',
-    ]);
-
-    $validated['teacher_id'] = $teacherId;
-
-    $schedule = $this->repo->create($validated);
-    return response()->json($schedule, 201);
-}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
     {
-        $schedule = $this->repo->find($id);
-
-        if (!$schedule) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        if ($schedule->teacher_id !== Auth::id()) {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
-
-        return response()->json($schedule);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $schedule = $this->repo->find($id);
-
-        if (!$schedule) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        if ($schedule->teacher_id !== Auth::id()) {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
-
         $validated = $request->validate([
             'student_id' => 'nullable|exists:users,id',
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'start_time' => 'sometimes|required|date',
-            'end_time' => 'sometimes|required|date|after_or_equal:start_time',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'day_of_week' => 'required|string',
+            'date' => 'required|date',
+            'start_time' => 'required|date_format:H:i:s',
+            'end_time' => 'required|date_format:H:i:s|after:start_time',
             'remind_at' => 'nullable|date|before_or_equal:start_time',
             'notified' => 'boolean',
         ]);
 
-        $updatedSchedule = $this->repo->update($id, $validated);
-        return response()->json($updatedSchedule);
+        $calendar = $this->calendarRepo->create($validated);
+        return response()->json($calendar, 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $schedule = $this->repo->find($id);
-
-        if (!$schedule) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-
-        if ($schedule->teacher_id !== Auth::id()) {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
-
-        $this->repo->delete($id);
-        return response()->json(['message' => 'Deleted successfully']);
+        $this->calendarRepo->delete($id);
+        return response()->json(['message' => 'Event deleted successfully']);
     }
 }

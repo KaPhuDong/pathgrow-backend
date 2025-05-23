@@ -20,8 +20,10 @@ return new class extends Migration
             
             $table->string('title');
             $table->text('description')->nullable();
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time')->nullable();
+            $table->string('day_of_week')->nullable();
+            $table->date('date')->nullable();
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamp('remind_at')->nullable();
             $table->boolean('notified')->default(false);
             $table->timestamps();
