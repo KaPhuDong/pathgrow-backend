@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\InClassPlanController;
 use App\Http\Controllers\Api\InClassSubjectController;
 use App\Http\Controllers\Api\SelfStudyPlanController;
 use App\Http\Controllers\Api\SelfStudySubjectController;
-
+use App\Http\Controllers\Api\ClassManagementController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -132,5 +132,27 @@ Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function ()
     Route::get('/', [StudentCalendarController::class, 'index']);
     Route::post('/', [StudentCalendarController::class, 'store']);
     Route::delete('{id}', [StudentCalendarController::class, 'destroy']);
+});
+
+
+//ClassManagement Routes
+Route::prefix('classesManagement')->group(function () {
+    Route::get('/', [ClassManagementController::class, 'index']);
+    Route::post('/', [ClassManagementController::class, 'store']);
+    Route::put('{id}', [ClassManagementController::class, 'update']);
+    Route::delete('{id}', [ClassManagementController::class, 'destroy']);
+    Route::get('{id}', [ClassManagementController::class, 'show']);
+
+    // Add/remove subjects
+    Route::post('{id}/add-subjects', [ClassManagementController::class, 'addSubjects']);
+    Route::post('{id}/remove-subjects', [ClassManagementController::class, 'removeSubjects']);
+
+    // Add/remove students
+    Route::post('{id}/add-students', [ClassManagementController::class, 'addStudents']);
+    Route::post('remove-students', [ClassManagementController::class, 'removeStudents']);
+
+    // Add/remove teachers
+    Route::post('{id}/add-teachers', [ClassManagementController::class, 'addTeachers']);
+    Route::post('remove-teachers', [ClassManagementController::class, 'removeTeachers']);
 });
 
