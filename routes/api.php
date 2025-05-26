@@ -136,6 +136,9 @@ Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function ()
 
 
 //ClassManagement Routes
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
+});
+
 Route::prefix('classesManagement')->group(function () {
     Route::get('/', [ClassManagementController::class, 'index']);
     Route::post('/', [ClassManagementController::class, 'store']);
@@ -155,4 +158,3 @@ Route::prefix('classesManagement')->group(function () {
     Route::post('{id}/add-teachers', [ClassManagementController::class, 'addTeachers']);
     Route::post('remove-teachers', [ClassManagementController::class, 'removeTeachers']);
 });
-
