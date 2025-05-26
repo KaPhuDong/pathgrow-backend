@@ -20,7 +20,9 @@ use App\Http\Controllers\Api\InClassPlanController;
 use App\Http\Controllers\Api\InClassSubjectController;
 use App\Http\Controllers\Api\SelfStudyPlanController;
 use App\Http\Controllers\Api\SelfStudySubjectController;
+use App\Http\Controllers\Api\TeacherScheduleController;
 use App\Http\Controllers\Api\ClassManagementController;
+use App\Http\Controllers\Api\UserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -134,9 +136,23 @@ Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function ()
     Route::delete('{id}', [StudentCalendarController::class, 'destroy']);
 });
 
+// //student calendar routes
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('teacher-schedules', TeacherScheduleController::class);
+// });
+
+Route::prefix('teacher-schedule')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [TeacherScheduleController::class, 'index']);
+    Route::post('/', [TeacherScheduleController::class, 'store']);
+    Route::delete('{id}', [TeacherScheduleController::class, 'destroy']);
+});
 
 //ClassManagement Routes
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users/{role}', [UserController::class, 'index']);
 });
 
 Route::prefix('classesManagement')->group(function () {
@@ -147,14 +163,14 @@ Route::prefix('classesManagement')->group(function () {
     Route::get('{id}', [ClassManagementController::class, 'show']);
 
     // Add/remove subjects
-    Route::post('{id}/add-subjects', [ClassManagementController::class, 'addSubjects']);
+    Route::post('{id}/subjects', [ClassManagementController::class, 'addSubjects']);
     Route::post('{id}/remove-subjects', [ClassManagementController::class, 'removeSubjects']);
 
     // Add/remove students
-    Route::post('{id}/add-students', [ClassManagementController::class, 'addStudents']);
+    Route::post('{id}/students', [ClassManagementController::class, 'addStudents']);
     Route::post('remove-students', [ClassManagementController::class, 'removeStudents']);
 
     // Add/remove teachers
-    Route::post('{id}/add-teachers', [ClassManagementController::class, 'addTeachers']);
+    Route::post('{id}/teachers', [ClassManagementController::class, 'addTeachers']);
     Route::post('remove-teachers', [ClassManagementController::class, 'removeTeachers']);
 });
