@@ -23,6 +23,11 @@ class UserRepository
         return User::find($id);
     }
 
+    public function getUserByRole(string $role)
+    {
+        return User::where('role', $role)->get();
+    }
+
     public function updateProfile(int $id, array $data): ?User
     {
         $user = $this->findById($id);
