@@ -20,6 +20,20 @@ class SemesterGoalController extends Controller
         $this->goalRepository = $goalRepository;
     }
 
+    public function getGoalsByUserId($userId, $semesterId, $subjectId) 
+    {
+        $goal = SemesterGoal::where('user_id', $userId)
+                    ->where('semester_id', $semesterId)
+                    ->where('subject_id', $subjectId)
+                    ->first();
+
+        if (!$goal) {
+            return response()->json((object)[]);
+        }
+
+        return response()->json($goal);
+    }
+
     public function show($semesterId, $subjectId)
     {
         $userId = Auth::id();

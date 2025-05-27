@@ -16,6 +16,15 @@ class WeeklyStudyPlanController extends Controller
         $this->service = $service;
     }
 
+    public function getPlansByUserId($userId)
+    {
+        if (!$userId) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        $weeks = $this->service->getByStudentId($userId);
+        return response()->json($weeks);
+    }
+
     public function index()
     {
         $userId = Auth::id();
