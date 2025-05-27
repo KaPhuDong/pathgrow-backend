@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //goals routes
 Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
+    Route::get('{userId}/{semester}/{subject}', [SemesterGoalController::class, 'getGoalsByUserId']);
     Route::get('{semester}/{subject}', [SemesterGoalController::class, 'show']);
     Route::post('{semester}/{subject}', [SemesterGoalController::class, 'store']);
     Route::put('{semester}/{subject}', [SemesterGoalController::class, 'update']);
@@ -61,7 +62,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // weekly study plan routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('weekly-study-plans', WeeklyStudyPlanController::class);
+    Route::apiResource('/weekly-study-plans', WeeklyStudyPlanController::class);
+    Route::get('/weekly-study-plans/user/{userId}', [WeeklyStudyPlanController::class, 'getPlansByUserId']);
 });
 
 // weekly goal routes
@@ -130,6 +132,12 @@ Route::prefix('achievements')->middleware('auth:sanctum')->group(function () {
 });
 
 //student calendar routes
+Route::prefix('teacher-view-student-calendar')->middleware('auth:sanctum')->group(function () {
+    Route::get('{userId}', [StudentCalendarController::class, 'getCalendarByUserId']);
+    Route::post('{userId}', [StudentCalendarController::class, 'addCalendarByUserId']);
+    Route::delete('{userId}/{id}', [StudentCalendarController::class, 'deleteCalendarByUserId']);
+});
+
 Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [StudentCalendarController::class, 'index']);
     Route::post('/', [StudentCalendarController::class, 'store']);
