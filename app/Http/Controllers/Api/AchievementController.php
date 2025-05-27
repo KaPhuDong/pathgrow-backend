@@ -10,6 +10,17 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class AchievementController extends Controller
 {
+
+    public function getAchievementsByUserId($userId)
+    {
+        $achievements = Achievement::where('student_id', $userId)->get();
+
+        return response()->json([
+            'message' => 'Achievements fetched successfully.',
+            'achievements' => $achievements
+        ]);
+    }
+
     // GET /api/achievements
     public function index()
     {

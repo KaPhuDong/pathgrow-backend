@@ -125,6 +125,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
 
 //achievement routes
 Route::prefix('achievements')->middleware('auth:sanctum')->group(function () {
+    Route::get('{userId}', [AchievementController::class, 'getAchievementsByUserId']);
     Route::get('/', [AchievementController::class, 'index']);
     Route::post('/', [AchievementController::class, 'store']);
     Route::put('{id}', [AchievementController::class, 'update']);
