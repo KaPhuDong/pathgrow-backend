@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\SelfStudyPlanController;
 use App\Http\Controllers\Api\SelfStudySubjectController;
 use App\Http\Controllers\Api\TeacherScheduleController;
 use App\Http\Controllers\Api\ClassManagementController;
+use App\Http\Controllers\Api\UserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -35,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //goals routes
 Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
+    Route::get('{userId}/{semester}/{subject}', [SemesterGoalController::class, 'getGoalsByUserId']);
     Route::get('{semester}/{subject}', [SemesterGoalController::class, 'show']);
     Route::post('{semester}/{subject}', [SemesterGoalController::class, 'store']);
     Route::put('{semester}/{subject}', [SemesterGoalController::class, 'update']);
@@ -60,7 +62,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // weekly study plan routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('weekly-study-plans', WeeklyStudyPlanController::class);
+    Route::apiResource('/weekly-study-plans', WeeklyStudyPlanController::class);
+    Route::get('/weekly-study-plans/user/{userId}', [WeeklyStudyPlanController::class, 'getPlansByUserId']);
 });
 
 // weekly goal routes
@@ -122,6 +125,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
 
 //achievement routes
 Route::prefix('achievements')->middleware('auth:sanctum')->group(function () {
+    Route::get('{userId}', [AchievementController::class, 'getAchievementsByUserId']);
     Route::get('/', [AchievementController::class, 'index']);
     Route::post('/', [AchievementController::class, 'store']);
     Route::put('{id}', [AchievementController::class, 'update']);
@@ -129,6 +133,12 @@ Route::prefix('achievements')->middleware('auth:sanctum')->group(function () {
 });
 
 //student calendar routes
+Route::prefix('teacher-view-student-calendar')->middleware('auth:sanctum')->group(function () {
+    Route::get('{userId}', [StudentCalendarController::class, 'getCalendarByUserId']);
+    Route::post('{userId}', [StudentCalendarController::class, 'addCalendarByUserId']);
+    Route::delete('{userId}/{id}', [StudentCalendarController::class, 'deleteCalendarByUserId']);
+});
+
 Route::prefix('student-calendar')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [StudentCalendarController::class, 'index']);
     Route::post('/', [StudentCalendarController::class, 'store']);
@@ -147,6 +157,13 @@ Route::prefix('teacher-schedule')->middleware('auth:sanctum')->group(function ()
 });
 
 //ClassManagement Routes
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users/{role}', [UserController::class, 'index']);
+});
+
 Route::prefix('classesManagement')->group(function () {
     Route::get('/', [ClassManagementController::class, 'index']);
     Route::post('/', [ClassManagementController::class, 'store']);
@@ -155,14 +172,14 @@ Route::prefix('classesManagement')->group(function () {
     Route::get('{id}', [ClassManagementController::class, 'show']);
 
     // Add/remove subjects
-    Route::post('{id}/add-subjects', [ClassManagementController::class, 'addSubjects']);
+    Route::post('{id}/subjects', [ClassManagementController::class, 'addSubjects']);
     Route::post('{id}/remove-subjects', [ClassManagementController::class, 'removeSubjects']);
 
     // Add/remove students
-    Route::post('{id}/add-students', [ClassManagementController::class, 'addStudents']);
+    Route::post('{id}/students', [ClassManagementController::class, 'addStudents']);
     Route::post('remove-students', [ClassManagementController::class, 'removeStudents']);
 
     // Add/remove teachers
-    Route::post('{id}/add-teachers', [ClassManagementController::class, 'addTeachers']);
+    Route::post('{id}/teachers', [ClassManagementController::class, 'addTeachers']);
     Route::post('remove-teachers', [ClassManagementController::class, 'removeTeachers']);
 });
