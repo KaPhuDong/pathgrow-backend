@@ -16,26 +16,22 @@ class GoalQuestionController extends Controller
         $this->goalQuestionRepository = $goalQuestionRepository;
     }
 
-    // Lấy tất cả câu hỏi
     public function index()
     {
         $goalQuestions = $this->goalQuestionRepository->all();
         return response()->json($goalQuestions);
     }
 
-    // Lấy câu hỏi theo ID
     public function show($id)
     {
         $goalQuestion = $this->goalQuestionRepository->find($id);
-
         if (!$goalQuestion) {
             return response()->json(['message' => 'Câu hỏi không tồn tại'], 404);
         }
-
         return response()->json($goalQuestion);
     }
 
-    // Tạo mới câu hỏi
+    // Tạo mới câu hỏi (student gửi câu hỏi)
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -54,7 +50,7 @@ class GoalQuestionController extends Controller
         return response()->json($goalQuestion, 201);
     }
 
-    // Cập nhật câu hỏi
+    // Cập nhật câu hỏi hoặc trả lời
     public function update(Request $request, $id)
     {
         $goalQuestion = $this->goalQuestionRepository->find($id);
@@ -63,9 +59,16 @@ class GoalQuestionController extends Controller
             return response()->json(['message' => 'Câu hỏi không tồn tại'], 404);
         }
 
-        $goalQuestion = $this->goalQuestionRepository->update($id, $request->all());
+        $data = $request->only(['question', 'answer', 'answered_by', 'answered_at']);
 
-        return response()->json($goalQuestion);
+        // Nếu có trả lời mới, tự động thêm thời gian trả lời nếu chưa có
+        if (isset($data['answer']) && !isset($data['answered_at'])) {
+            $data['answered_at'] = now();
+        }
+
+        $updatedGoalQuestion = $this->goalQuestionRepository->update($id, $data);
+
+        return response()->json($updatedGoalQuestion);
     }
 
     // Xóa câu hỏi

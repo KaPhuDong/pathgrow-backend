@@ -1,80 +1,72 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Repositories\NotificationsRepository;
 use App\Models\Notifications;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends Controller
 {
-    protected $repo;
-
-    public function __construct(NotificationsRepository $repo)
-    {
-        $this->repo = $repo;
-    }
-
-    // Lấy tất cả thông báo
+    // Lấy danh sách thông báo của user đăng nhập
     public function index()
     {
-        return response()->json($this->repo->getAll());
+        $notifications = Notifications::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($notifications);
     }
 
-    // Lấy thông báo theo user
-   public function getByUser($id)
-{
-    if (!\App\Models\User::find($id)) {
-        return response()->json(['message' => 'User not found'], 404);
-    }
-
-    $notifications = $this->repo->getByUser($id);
-
-    return response()->json($notifications);
-}
-
-
-    // Lấy thông báo theo ID
-    // public function show($id)
-    // {
-    //     $notification = $this->repo->getById($id);
-
-    //     return $notification
-    //         ? response()->json($notification)
-    //         : response()->json(['message' => 'Not found'], 404);
-    // }
-
-    // Tạo mới thông báo
+    // Tạo mới thông báo (thường gọi từ chỗ khác, có thể làm protected hoặc qua service)
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'type' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'message' => 'required|string',
+            'sender_id' => 'nullable|exists:users,id',
         ]);
 
-        $notification = $this->repo->create($data);
+        $notification = Notifications::create([
+            'user_id' => $request->user_id,
+            'sender_id' => $request->sender_id,
+            'type' => $request->type,
+            'title' => $request->title,
+            'message' => $request->message,
+            'is_read' => false,
+        ]);
 
-        return response()->json($notification, 201);
+        return response()->json([
+            'message' => 'Notification created successfully',
+            'notification' => $notification
+        ], 201);
     }
 
-    // Đánh dấu đã đọc
+    // Đánh dấu một thông báo đã đọc
     public function markAsRead($id)
     {
-        $updated = $this->repo->markAsRead($id);
+        $notification = Notifications::where('user_id', Auth::id())->findOrFail($id);
+        $notification->update(['is_read' => true]);
 
-        return $updated
-            ? response()->json(['message' => 'Marked as read'])
-            : response()->json(['message' => 'Not found'], 404);
+        return response()->json(['message' => 'Notification marked as read.']);
     }
 
-    // Xóa thông báo
+    // Đánh dấu tất cả thông báo đã đọc
+    public function markAllAsRead()
+    {
+        Notifications::where('user_id', Auth::id())->where('is_read', false)->update(['is_read' => true]);
+
+        return response()->json(['message' => 'All notifications marked as read.']);
+    }
+
+    // Xóa một thông báo (nếu cần)
     public function destroy($id)
     {
-        $deleted = $this->repo->delete($id);
+        $notification = Notifications::where('user_id', Auth::id())->findOrFail($id);
+        $notification->delete();
 
-        return $deleted
-            ? response()->json(['message' => 'Deleted'])
-            : response()->json(['message' => 'Not found'], 404);
+        return response()->json(['message' => 'Notification deleted successfully.']);
     }
 }

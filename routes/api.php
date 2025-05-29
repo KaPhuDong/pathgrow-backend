@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SemesterGoalController;
-use App\Http\Controllers\Api\NotificationsController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
 use App\Http\Controllers\Api\ListStudentController;
@@ -94,13 +94,13 @@ Route::middleware('auth:sanctum')->prefix('student')->group(function () {
     Route::post('/account/change-password', [StudentController::class, 'changePassword']);
 });
 
-//notification routes (BỎ middleware để test không cần login)
-Route::prefix('notifications')->group(function () {
-    Route::get('/', [NotificationsController::class, 'index']);
-    Route::get('{id}', [NotificationsController::class, 'getByUser']);
-    Route::post('/', [NotificationsController::class, 'store']);
-    Route::put('{id}/read', [NotificationsController::class, 'markAsRead']);
-    Route::delete('{id}', [NotificationsController::class, 'destroy']);
+//notification 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [NotificationsController::class, 'index']);
+    Route::post('/notifications', [NotificationsController::class, 'store']);
+    Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
+    Route::patch('/notifications/read-all', [NotificationsController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
 });
 
 //classes routes

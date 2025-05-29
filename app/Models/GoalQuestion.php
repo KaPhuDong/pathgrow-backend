@@ -9,32 +9,34 @@ class GoalQuestion extends Model
 {
     use HasFactory;
 
-    // Định nghĩa bảng
-    protected $table = 'goal_questions';
-
-    // Các trường có thể gán giá trị (fillable)
     protected $fillable = [
         'user_id',
         'semester_id',
         'subject_id',
         'question',
+        'answer',
+        'answered_by',
+        'answered_at',
     ];
 
-    // Quan hệ với bảng User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Quan hệ với bảng Semester
+    public function answeredBy()
+    {
+        return $this->belongsTo(User::class, 'answered_by');
+    }
+
     public function semester()
     {
         return $this->belongsTo(Semester::class);
     }
 
-    // Quan hệ với bảng Subject
     public function subject()
     {
         return $this->belongsTo(Subject::class);
     }
 }
+
