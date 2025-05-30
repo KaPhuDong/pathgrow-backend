@@ -43,11 +43,20 @@ Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [GoalQuestionController::class, 'index']);
+    Route::get('{userId}/{semester}/{subject}', [GoalQuestionController::class, 'index']);
     Route::get('{id}', [GoalQuestionController::class, 'show']);
     Route::post('/', [GoalQuestionController::class, 'store']);
     Route::put('{id}', [GoalQuestionController::class, 'update']);
     Route::delete('{id}', [GoalQuestionController::class, 'destroy']);
+});
+
+//notification 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [NotificationsController::class, 'index']);
+    Route::post('/notifications', [NotificationsController::class, 'store']);
+    Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
+    Route::patch('/notifications/read-all', [NotificationsController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
 });
 
 // student profile routes
@@ -95,15 +104,6 @@ Route::middleware('auth:sanctum')->prefix('student')->group(function () {
     Route::get('/account', [StudentController::class, 'getProfile']);
     Route::post('/account/update', [StudentController::class, 'updateProfile']);
     Route::post('/account/change-password', [StudentController::class, 'changePassword']);
-});
-
-//notification 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/notifications', [NotificationsController::class, 'index']);
-    Route::post('/notifications', [NotificationsController::class, 'store']);
-    Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
-    Route::patch('/notifications/read-all', [NotificationsController::class, 'markAllAsRead']);
-    Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
 });
 
 //classes routes
