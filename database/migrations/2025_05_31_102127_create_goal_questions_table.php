@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('semester_id');
             $table->unsignedInteger('subject_id');
+            $table->unsignedInteger('teacher_id')->nullable(); // thêm cột teacher_id
+
             $table->text('question');
             $table->text('answer')->nullable();
             $table->unsignedInteger('answered_by')->nullable();
@@ -27,6 +29,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('semester_id')->references('id')->on('semesters')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('set null'); // foreign key teacher_id
             $table->foreign('answered_by')->references('id')->on('users')->onDelete('set null');
         });
     }

@@ -8,7 +8,6 @@ class GoalQuestionRepository
 {
     public function all()
     {
-        // Load luôn user, semester, subject, người trả lời (answeredBy)
         return GoalQuestion::with(['user', 'semester', 'subject', 'answeredBy'])->get();
     }
 
@@ -40,5 +39,34 @@ class GoalQuestionRepository
             return true;
         }
         return false;
+    }
+
+    // Lấy các câu hỏi chưa trả lời của học sinh (user)
+    public function getUnansweredByStudent($userId, $semesterId, $subjectId)
+    {
+        return GoalQuestion::where('user_id', $userId)
+            ->where('semester_id', $semesterId)
+            ->where('subject_id', $subjectId)
+            ->whereNull('answer')
+            ->with(['user', 'semester', 'subject'])
+            ->get();
+    }
+
+    // Lấy các câu hỏi chưa trả lời cho giáo viên (lọc theo teacher_id trong goal_questions)
+    // Thêm filter semester_id, subject_id nếu có
+    public function getUnreadQuestionsForTeacher($teacherId, $semesterId = null, $subjectId = null)
+    {
+        $query = GoalQuestion::whereNull('answer')
+            ->where('teacher_id', $teacherId);
+
+        if ($semesterId) {
+            $query->where('semester_id', $semesterId);
+        }
+
+        if ($subjectId) {
+            $query->where('subject_id', $subjectId);
+        }
+
+        return $query->with(['user', 'semester', 'subject', 'answeredBy'])->get();
     }
 }

@@ -13,6 +13,7 @@ class GoalQuestion extends Model
         'user_id',
         'semester_id',
         'subject_id',
+        'teacher_id',   // Thêm dòng này
         'question',
         'answer',
         'answered_by',
@@ -29,6 +30,11 @@ class GoalQuestion extends Model
         return $this->belongsTo(User::class, 'answered_by');
     }
 
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');  // Thêm relation cho teacher
+    }
+
     public function semester()
     {
         return $this->belongsTo(Semester::class);
@@ -39,4 +45,3 @@ class GoalQuestion extends Model
         return $this->belongsTo(Subject::class);
     }
 }
-

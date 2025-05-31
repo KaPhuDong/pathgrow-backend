@@ -43,11 +43,17 @@ Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
-    Route::get('{userId}/{semester}/{subject}', [GoalQuestionController::class, 'index']);
-    Route::get('{id}', [GoalQuestionController::class, 'show']);
-    Route::post('/', [GoalQuestionController::class, 'store']);
-    Route::put('{id}', [GoalQuestionController::class, 'update']);
-    Route::delete('{id}', [GoalQuestionController::class, 'destroy']);
+    Route::get('/', [GoalQuestionController::class, 'index']); 
+    Route::get('/{id}', [GoalQuestionController::class, 'show']); 
+    Route::post('/', [GoalQuestionController::class, 'store']); 
+    Route::put('/{id}', [GoalQuestionController::class, 'update']); 
+    Route::delete('/{id}', [GoalQuestionController::class, 'destroy']); 
+
+    // Lấy câu hỏi chưa trả lời của học sinh (student) theo filter (userId, semesterId, subjectId)
+    Route::get('/student/{userId}/{semesterId}/{subjectId}/unanswered', [GoalQuestionController::class, 'getUnansweredByStudent']);
+
+    // Lấy câu hỏi chưa trả lời cho giáo viên hiện tại (filter qua query param semester_id, subject_id)
+    Route::get('/teacher/unread-questions', [GoalQuestionController::class, 'getUnreadQuestions']);
 });
 
 //notification 
