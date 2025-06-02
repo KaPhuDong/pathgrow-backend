@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SemesterGoalController;
-use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\GoalQuestionController;
 use App\Http\Controllers\Api\ClassController;
 use App\Http\Controllers\Api\ListStudentController;
