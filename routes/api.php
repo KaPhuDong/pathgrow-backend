@@ -43,11 +43,29 @@ Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [GoalQuestionController::class, 'index']);
-    Route::get('{id}', [GoalQuestionController::class, 'show']);
-    Route::post('/', [GoalQuestionController::class, 'store']);
-    Route::put('{id}', [GoalQuestionController::class, 'update']);
-    Route::delete('{id}', [GoalQuestionController::class, 'destroy']);
+    Route::get('/', [GoalQuestionController::class, 'index']); 
+    Route::get('/{id}', [GoalQuestionController::class, 'show']); 
+    Route::post('/', [GoalQuestionController::class, 'store']); 
+    Route::put('/{id}', [GoalQuestionController::class, 'update']); 
+    Route::delete('/{id}', [GoalQuestionController::class, 'destroy']); 
+
+    // Lấy câu hỏi chưa trả lời của học sinh (student) theo filter (userId, semesterId, subjectId)
+    Route::get('/student/{userId}/{semesterId}/{subjectId}/unanswered', [GoalQuestionController::class, 'getUnansweredByStudent']);
+
+    // Lấy câu hỏi chưa trả lời cho giáo viên hiện tại (filter qua query param semester_id, subject_id)
+    Route::get('/teacher/unread-questions', [GoalQuestionController::class, 'getUnreadQuestions']);
+    Route::post('/teacher/answer-questions', [GoalQuestionController::class, 'answer']);
+});
+
+//notification 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [NotificationsController::class, 'index']);
+    Route::post('/notifications', [NotificationsController::class, 'store']);
+    Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
+    Route::patch('/notifications/read-all', [NotificationsController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
+    // Route::post('/notifications/{id}/answer', [NotificationsController::class, 'answer']);
+
 });
 
 // student profile routes
@@ -95,15 +113,6 @@ Route::middleware('auth:sanctum')->prefix('student')->group(function () {
     Route::get('/account', [StudentController::class, 'getProfile']);
     Route::post('/account/update', [StudentController::class, 'updateProfile']);
     Route::post('/account/change-password', [StudentController::class, 'changePassword']);
-});
-
-//notification routes (BỎ middleware để test không cần login)
-Route::prefix('notifications')->group(function () {
-    Route::get('/', [NotificationsController::class, 'index']);
-    Route::get('{id}', [NotificationsController::class, 'getByUser']);
-    Route::post('/', [NotificationsController::class, 'store']);
-    Route::put('{id}/read', [NotificationsController::class, 'markAsRead']);
-    Route::delete('{id}', [NotificationsController::class, 'destroy']);
 });
 
 //classes routes

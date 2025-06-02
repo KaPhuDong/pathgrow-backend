@@ -18,4 +18,9 @@ class Subject extends Model
     {
         return $this->hasMany(SelfStudySubject::class);
     }
+    public function teacher()
+{
+    return $this->belongsTo(User::class, 'teacher_id');
+}
+
 }

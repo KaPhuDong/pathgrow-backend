@@ -8,11 +8,17 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Subject::query();
+
+        if ($request->has('teacher_id')) {
+            $query->where('teacher_id', $request->teacher_id);
+        }
+
         return response()->json([
             'message' => 'Danh sách môn học',
-            'data' => Subject::all()
+            'data' => $query->get()
         ]);
     }
 }
