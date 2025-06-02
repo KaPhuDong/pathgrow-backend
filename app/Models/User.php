@@ -43,4 +43,19 @@ class User extends Authenticatable
                     ->withTimestamps()
                     ->withPivot('achieved_at');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notifications::class, 'user_id');
+    }
+
+    public function sentNotifications()
+    {
+        return $this->hasMany(Notifications::class, 'sender_id');
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->where('is_read', false);
+    }
 }

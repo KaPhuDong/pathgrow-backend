@@ -15,7 +15,11 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 100)->notNullable();
             $table->text('description')->nullable();
+            $table->unsignedInteger('teacher_id')->nullable();
             $table->timestamps();
+
+
+            $table->foreign('teacher_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 

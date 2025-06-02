@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             InClassPlanSeeder::class,
             InClassSubjectSeeder::class,
             StudentCalendarSeeder::class,
+            NotificationsTableSeeder::class,
+
         ]);
     }
 }
