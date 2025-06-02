@@ -11,6 +11,13 @@ class GoalQuestionRepository
         return GoalQuestion::with(['user', 'semester', 'subject', 'answeredBy'])->get();
     }
 
+    public function getByStudent($userId)
+    {
+        return GoalQuestion::where('user_id', $userId)
+            ->with(['user', 'semester', 'subject', 'answeredBy'])
+            ->get();
+    }
+
     public function find($id)
     {
         return GoalQuestion::with(['user', 'semester', 'subject', 'answeredBy'])->find($id);
