@@ -54,6 +54,7 @@ Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
 
     // Lấy câu hỏi chưa trả lời cho giáo viên hiện tại (filter qua query param semester_id, subject_id)
     Route::get('/teacher/unread-questions', [GoalQuestionController::class, 'getUnreadQuestions']);
+    Route::post('/teacher/answer-questions', [GoalQuestionController::class, 'answer']);
 });
 
 //notification 
@@ -63,6 +64,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
     Route::patch('/notifications/read-all', [NotificationsController::class, 'markAllAsRead']);
     Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
+    // Route::post('/notifications/{id}/answer', [NotificationsController::class, 'answer']);
+
 });
 
 // student profile routes

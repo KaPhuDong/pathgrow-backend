@@ -114,4 +114,45 @@ class GoalQuestionController extends Controller
             'questions' => $questions,
         ]);
     }
+
+    // Giáo viên trả lời nhiều câu hỏi
+    public function answer(Request $request)
+    {
+        $teacherId = Auth::id();
+
+        $validator = Validator::make($request->all(), [
+            'answers' => 'required|array',
+            'answers.*.id' => 'required|exists:goal_questions,id',
+            'answers.*.answer' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $updatedQuestions = [];
+
+        foreach ($request->input('answers') as $item) {
+            $questionId = $item['id'];
+            $answerText = $item['answer'];
+
+            $question = $this->goalQuestionRepository->find($questionId);
+
+            if ($question && !$question->answer) {
+                $updateData = [
+                    'answer' => $answerText,
+                    'answered_by' => $teacherId,
+                    'answered_at' => now(),
+                ];
+
+                $updated = $this->goalQuestionRepository->update($questionId, $updateData);
+                $updatedQuestions[] = $updated;
+            }
+        }
+
+        return response()->json([
+            'message' => 'Answers submitted successfully',
+            'updated' => $updatedQuestions,
+        ]);
+    }
 }
