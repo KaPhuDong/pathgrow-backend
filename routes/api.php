@@ -43,7 +43,8 @@ Route::prefix('goals')->middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('goal-questions')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [GoalQuestionController::class, 'index']); 
+    Route::get('/teacher', [GoalQuestionController::class, 'index']);
+    Route::get('/student', [GoalQuestionController::class, 'getGoalQuestionsByStudent']);
     Route::get('/{id}', [GoalQuestionController::class, 'show']); 
     Route::post('/', [GoalQuestionController::class, 'store']); 
     Route::put('/{id}', [GoalQuestionController::class, 'update']); 

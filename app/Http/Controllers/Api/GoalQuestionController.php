@@ -24,6 +24,13 @@ class GoalQuestionController extends Controller
         return response()->json($goalQuestions);
     }
 
+    public function getGoalQuestionsByStudent()
+    {
+        $userId = Auth::id();
+        $goalQuestions = $this->goalQuestionRepository->getByStudent($userId);
+        return response()->json($goalQuestions);
+    }
+
     // Lấy câu hỏi theo id
     public function show($id)
     {
