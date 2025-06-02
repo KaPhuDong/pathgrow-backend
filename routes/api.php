@@ -87,7 +87,7 @@ Route::apiResource('self-study-subjects', SelfStudySubjectController::class)->mi
 
 // subject routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/subjects', [SubjectController::class, 'index']);
+    Route::get('/subjects', [SubjectController::class, 'getAllSubjects']);
 });
 
 //student account routes

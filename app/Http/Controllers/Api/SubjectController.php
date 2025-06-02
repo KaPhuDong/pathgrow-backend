@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Subject;
-use Illuminate\Http\Request;
+use App\Services\SubjectService;
 
 class SubjectController extends Controller
 {
-    public function index()
+    protected $subjectService;
+
+    public function __construct()
     {
-        return response()->json([
-            'message' => 'Danh sách môn học',
-            'data' => Subject::all()
-        ]);
+        $this->subjectService = new SubjectService();
+    }
+
+    public function getAllSubjects()
+    {
+        return $this->subjectService->getAllSubjects();
     }
 }
