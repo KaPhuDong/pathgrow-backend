@@ -21,7 +21,7 @@ class SemesterGoalSeeder extends Seeder
         $semester = Semester::create(['name' => 'Semester 1']);
 
         // Tạo dữ liệu cho bảng Subject
-        $subject = Subject::create(['name' => 'IT English']);
+        $subject = Subject::create(['name' => 'IT English 2']);
 
         // Tạo dữ liệu cho bảng SemesterGoal
         SemesterGoal::create([
