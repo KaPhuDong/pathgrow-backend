@@ -8,7 +8,9 @@ class AdminRepository
 {
     public function getAllUsers()
     {
-        return User::whereIn('role', ['teacher', 'student'])->get();
+        return User::whereIn('role', ['teacher', 'student'])
+        ->orderBy('id', 'desc')
+        ->get();
     }
 
     public function getUserById($id)
@@ -17,7 +19,9 @@ class AdminRepository
     }
     public function getUsersByRoles(array $roles)
     {
-        return User::whereIn('role', $roles)->get();
+        return User::whereIn('role', $roles)
+        ->orderBy('id', 'desc')
+        ->get();
     }
 
     public function createUser(array $data)

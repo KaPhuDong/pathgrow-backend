@@ -8,13 +8,16 @@ class GoalQuestionRepository
 {
     public function all()
     {
-        return GoalQuestion::with(['user', 'semester', 'subject', 'answeredBy'])->get();
+        return GoalQuestion::with(['user', 'semester', 'subject', 'answeredBy'])
+            ->orderBy('id', 'desc')
+            ->get();
     }
 
     public function getByStudent($userId)
     {
         return GoalQuestion::where('user_id', $userId)
             ->with(['user', 'semester', 'subject', 'answeredBy'])
+            ->orderBy('id', 'desc')
             ->get();
     }
 

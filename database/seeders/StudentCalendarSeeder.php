@@ -16,7 +16,7 @@ class StudentCalendarSeeder extends Seeder
         DB::table('student_calendars')->insert([
             [
                 'user_id' => $userId,
-                'title' => 'It English',
+                'title' => 'IT English 2',
                 'day_of_week' => 'Monday',
                 'date' => '2025-05-19',
                 'start_time' => '08:00:00',
