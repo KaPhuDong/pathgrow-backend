@@ -8,7 +8,9 @@ class ClassManagementRepository
 {
     public function getAll()
     {
-        return ClassesManagement::all();
+        return ClassesManagement::orderBy('id', 'desc')
+            ->orderBy('id', 'desc')
+            ->get();
     }
 
     public function find($id)

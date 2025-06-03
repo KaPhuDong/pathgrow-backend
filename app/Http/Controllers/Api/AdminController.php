@@ -16,7 +16,7 @@ class AdminController extends Controller
         $this->adminRepo = $adminRepo;
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $roleFilter = ['teacher', 'student'];
         return response()->json(

@@ -25,7 +25,9 @@ class UserRepository
 
     public function getUserByRole(string $role)
     {
-        return User::where('role', $role)->get();
+        return User::where('role', $role)
+        ->orderBy('id', 'desc')
+        ->get();
     }
 
     public function updateProfile(int $id, array $data): ?User
@@ -64,6 +66,7 @@ class UserRepository
     {
         return User::where('role', 'student')
                    ->where('class_id', $classId)
+                   ->orderBy('id', 'desc')
                    ->get();
     }
 }
