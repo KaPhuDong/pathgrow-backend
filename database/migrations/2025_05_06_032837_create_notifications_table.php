@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->text('message');
+
+            $table->unsignedInteger('user_id'); 
+            $table->unsignedInteger('sender_id')->nullable(); // người gửi (optional)
+
+            $table->string('type'); 
+            $table->string('title')->nullable(); // tiêu đề ngắn gọn (tùy chọn)
+            $table->text('message'); // nội dung thông báo
+
             $table->boolean('is_read')->default(false);
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps(); 
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

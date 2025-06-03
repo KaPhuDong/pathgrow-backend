@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\StudentCalendar;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,8 +13,21 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ClassesTableSeeder::class,
+            ClassSeeder::class,
+            SemesterSeeder::class,
+            SubjectSeeder::class,
+            ClassSubjectSeeder::class,
             UsersTableSeeder::class,
+            SemesterGoalSeeder::class,
+            WeeklyStudyPlanSeeder::class,
+            WeeklyGoalSeeder::class,
+            SelfStudyPlanSeeder::class,
+            SelfStudySubjectSeeder::class,
+            InClassPlanSeeder::class,
+            InClassSubjectSeeder::class,
+            StudentCalendarSeeder::class,
+            NotificationsTableSeeder::class,
+
         ]);
     }
 }

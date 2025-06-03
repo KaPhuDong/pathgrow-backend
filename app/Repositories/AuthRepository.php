@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Auth;
+namespace App\Repositories;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthRepository implements AuthRepositoryInterface
 {
-    public function attemptLogin(array $credentials)
+    public function findUserByEmailAndRole(string $email, string $role)
     {
-        return Auth::attempt($credentials);
+        return User::where('email', $email)->where('role', $role)->first();
     }
 }
