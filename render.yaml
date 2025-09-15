@@ -1,0 +1,104 @@
+services:
+  - type: web
+    name: pathgrow-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_NAME
+        value: Laravel
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        value: base64:2oKU2RPAStqOog0au06kywP3bGIBbMbICCftnuKNevo=
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://pathgrow-backend.onrender.com
+
+      - key: APP_LOCALE
+        value: en
+      - key: APP_FALLBACK_LOCALE
+        value: en
+      - key: APP_FAKER_LOCALE
+        value: en_US
+
+      - key: PHP_CLI_SERVER_WORKERS
+        value: 4
+      - key: BCRYPT_ROUNDS
+        value: 12
+
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: info
+
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase:
+          name: pathgrow-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: pathgrow-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: pathgrow-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: pathgrow-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: pathgrow-db
+          property: password
+
+      - key: SESSION_DRIVER
+        value: database
+      - key: SESSION_LIFETIME
+        value: 120
+
+      - key: CACHE_STORE
+        value: database
+      - key: CACHE_PREFIX
+        value: pg_
+
+      - key: REDIS_CLIENT
+        value: phpredis
+      - key: REDIS_HOST
+        value: 127.0.0.1
+      - key: REDIS_PASSWORD
+        value: null
+      - key: REDIS_PORT
+        value: 6379
+
+      - key: MAIL_MAILER
+        value: log
+      - key: MAIL_FROM_ADDRESS
+        value: hello@example.com
+      - key: MAIL_FROM_NAME
+        value: Laravel
+
+      - key: CLOUDINARY_URL
+        value: cloudinary://931388216412238:c27Lq9zSSuyMRZW0zOggysoeUQo@dkyirb8pv
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dkyirb8pv
+      - key: CLOUDINARY_API_KEY
+        value: 931388216412238
+      - key: CLOUDINARY_API_SECRET
+        value: c27Lq9zSSuyMRZW0zOggysoeUQo
+
+    postDeployCommand: |
+      php artisan migrate --force
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+
+databases:
+  - name: pathgrow-db
+    plan: free
+    databaseName: pathgrow
+    user: laravel
