@@ -6,12 +6,9 @@ databases:
 services:
   - type: web
     name: pathgrow-backend
-    env: php
+    runtime: docker
     plan: free
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-    startCommand: |
-      php artisan serve --host 0.0.0.0 --port 10000
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_ENV
         value: production
@@ -55,9 +52,3 @@ services:
         value: 931388216412238
       - key: CLOUDINARY_API_SECRET
         value: c27Lq9zSSuyMRZW0zOggysoeUQo
-
-    postDeployCommand: |
-      php artisan migrate --force
-      php artisan config:cache
-      php artisan route:cache
-      php artisan view:cache
