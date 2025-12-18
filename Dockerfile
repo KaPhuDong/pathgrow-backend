@@ -1,30 +1,33 @@
-# Dùng PHP với Apache
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
-# Cài extension cần thiết cho Laravel + MySQL
+# Cài đặt các thư viện hệ thống cần thiết
 RUN apt-get update && apt-get install -y \
-    git curl unzip libpq-dev libonig-dev libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip gd
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
 
-# Enable Apache mod_rewrite (Laravel cần cho routing)
-RUN a2enmod rewrite
+# Cài đặt PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Cài đặt Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy code vào container
-WORKDIR /var/www/html
+WORKDIR /var/www
 COPY . .
 
-# Cài Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+# Cài đặt dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Laravel cache config + route + view (có migrate)
-RUN php artisan config:cache || true \
-    && php artisan route:cache || true \
-    && php artisan view:cache || true
+# Phân quyền cho Laravel
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Expose port
-EXPOSE 8080
+# Cổng mặc định
+EXPOSE 80
 
-# Start command (chạy migrate trước rồi serve)
-CMD php artisan migrate --force && \
-    php artisan serve --host 0.0.0.0 --port 8080
+# Lệnh khởi chạy (sử dụng built-in server của PHP cho đơn giản)
+CMD php artisan serve --host=0.0.0.0 --port=80
